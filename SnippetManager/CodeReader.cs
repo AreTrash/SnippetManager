@@ -34,28 +34,28 @@ namespace SnippetManager
             {
                 if (IsSnippetTag(line, out var title) && !usedRows.Contains(i))
                 {
-                    yield return GetSnippetInfo(title, i + 1, out var end);
-                    usedRows.Add(end);
+                    yield return GetSnippetInfo(title, i + 1, out var endRow);
+                    usedRows.Add(endRow);
                 }
             }
         }
 
-        Snippet GetSnippetInfo(string title, int start, out int end)
+        Snippet GetSnippetInfo(string title, int startRow, out int endRow)
         {
             var snippetLines = new List<string>();
 
-            foreach (var (line, i) in codeLines.Skip(start).Select((line, i) => (line, i)))
+            foreach (var (line, i) in codeLines.Skip(startRow).Select((line, i) => (line, i)))
             {
                 if (IsSnippetTag(line, out var _title) && _title == title)
                 {
-                    end = i + start;
+                    endRow = i + startRow;
                     return new Snippet(title, snippetLines);
                 }
 
                 snippetLines.Add(line);
             }
 
-            end = codeLines.Count;
+            endRow = codeLines.Count;
             return new Snippet(title, snippetLines);
         }
 
