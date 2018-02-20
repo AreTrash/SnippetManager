@@ -17,7 +17,6 @@ namespace SnippetManager.Test
             var sr = new SettingReader(settings);
             Assert.Equal("hogehoge", sr.CodeFolderPath);
             Assert.Equal("fugafuga", sr.VisualStudioSnippetFolderPath);
-            Assert.True(sr.UpdateVisualStudioSnippet);
         }
 
         [Fact]
@@ -25,7 +24,6 @@ namespace SnippetManager.Test
         {
             var sr = new SettingReader(new string[0]);
             Assert.Null(sr.CodeFolderPath);
-            Assert.False(sr.UpdateVisualStudioSnippet);
         }
     }
 }

@@ -4,17 +4,16 @@ namespace SnippetManager
 {
     public class SettingReader
     {
-        public string CodeFolderPath => ReadStringSetting(nameof(CodeFolderPath));
-        public string VisualStudioSnippetFolderPath => ReadStringSetting(nameof(VisualStudioSnippetFolderPath));
-        public string ReShaperSettingPath => ReadStringSetting(nameof(ReShaperSettingPath));
-        public bool UpdateVisualStudioSnippet => ReadBoolSetting(nameof(UpdateVisualStudioSnippet));
-        public bool UpdateReShaperSetting => ReadBoolSetting(nameof(UpdateReShaperSetting));
+        public string CodeFolderPath { get; }
+        public string VisualStudioSnippetFolderPath { get; }
 
         readonly IReadOnlyCollection<string> settings;
 
         public SettingReader(string[] settings)
         {
             this.settings = settings;
+            CodeFolderPath = ReadStringSetting(nameof(CodeFolderPath));
+            VisualStudioSnippetFolderPath = ReadStringSetting(nameof(VisualStudioSnippetFolderPath));
         }
 
         string ReadStringSetting(string name)
@@ -24,15 +23,6 @@ namespace SnippetManager
                 if (fs.name == name) return fs.body;
             }
             return null;
-        }
-
-        bool ReadBoolSetting(string name)
-        {
-            foreach (var fs in GetFormattedSettings())
-            {
-                if (fs.name == name) return bool.Parse(fs.body);
-            }
-            return false;
         }
 
         IEnumerable<(string name, string body)> GetFormattedSettings()
