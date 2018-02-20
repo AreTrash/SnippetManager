@@ -1,9 +1,10 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 
 namespace SnippetManager
 {
-    public class Snippet
+    public class Snippet : IEquatable<Snippet>
     {
         public string Title { get; }
         public IReadOnlyCollection<string> CodeLines { get; }
@@ -12,6 +13,11 @@ namespace SnippetManager
         {
             Title = title;
             CodeLines = codeLines;
+        }
+
+        public bool Equals(Snippet other)
+        {
+            return other != null && Title == other.Title && CodeLines.SequenceEqual(other.CodeLines);
         }
     }
 
