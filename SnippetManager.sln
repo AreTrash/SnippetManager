@@ -1,0 +1,31 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 15
+VisualStudioVersion = 15.0.27130.2027
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SnippetManager", "SnippetManager\SnippetManager.csproj", "{42EADF43-C4BF-472A-B2DE-DA1F057C9EDD}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SnippetManager.Test", "SnippetManager.Test\SnippetManager.Test.csproj", "{CB6125B5-9D52-42EC-A39F-7D03352053CF}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{42EADF43-C4BF-472A-B2DE-DA1F057C9EDD}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{42EADF43-C4BF-472A-B2DE-DA1F057C9EDD}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{42EADF43-C4BF-472A-B2DE-DA1F057C9EDD}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{42EADF43-C4BF-472A-B2DE-DA1F057C9EDD}.Release|Any CPU.Build.0 = Release|Any CPU
+		{CB6125B5-9D52-42EC-A39F-7D03352053CF}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{CB6125B5-9D52-42EC-A39F-7D03352053CF}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{CB6125B5-9D52-42EC-A39F-7D03352053CF}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{CB6125B5-9D52-42EC-A39F-7D03352053CF}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {0249556D-DDA2-4C99-9EE8-0C1DC97B018B}
+	EndGlobalSection
+EndGlobal
