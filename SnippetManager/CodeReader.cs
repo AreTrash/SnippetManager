@@ -1,29 +1,14 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
 
 namespace SnippetManager
 {
-    public class Snippet : IEquatable<Snippet>
-    {
-        public string Title { get; }
-        public IReadOnlyCollection<string> CodeLines { get; }
-
-        public Snippet(string title, IReadOnlyCollection<string> codeLines)
-        {
-            Title = title;
-            CodeLines = codeLines;
-        }
-
-        public bool Equals(Snippet other)
-        {
-            return other != null && Title == other.Title && CodeLines.SequenceEqual(other.CodeLines);
-        }
-    }
-
+    /// <summary>
+    /// ソースコードを読み取りスニペットを取得する
+    /// </summary>
     public class CodeReader
     {
-        const string TagPoint = "//$";
+        const string SnippetTag = "//$";
 
         readonly IReadOnlyCollection<string> codeLines;
 
@@ -69,9 +54,9 @@ namespace SnippetManager
         {
             var trim = line.Trim(' ', '\t');
 
-            if (trim.StartsWith(TagPoint))
+            if (trim.StartsWith(SnippetTag))
             {
-                title = trim.Remove(0, TagPoint.Length).Trim(' ');
+                title = trim.Remove(0, SnippetTag.Length).Trim(' ');
                 return true;
             }
 
