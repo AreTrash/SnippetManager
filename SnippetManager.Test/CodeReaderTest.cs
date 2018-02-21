@@ -90,5 +90,29 @@ namespace SnippetManager.Test
             var act = new CodeReader(codeLines).GetSnippetInfos();
             Assert.Equal(exp, act);
         }
+
+        [Fact]
+        public void GetDuplicatedSnippetInfo()
+        {
+            var codeLines = new[]
+            {
+                "XXX",
+                "//$Hoge",
+                "YYY",
+                "//$Hoge",
+                "OOO",
+                "//$Hoge",
+                "ZZZ",
+                "//$Hoge",
+            };
+
+            var exp = new[]
+            {
+                new Snippet("Hoge", new[] {"YYY"}),
+                new Snippet("Hoge", new[] {"ZZZ"}),
+            };
+            var act = new CodeReader(codeLines).GetSnippetInfos();
+            Assert.Equal(exp, act);
+        }
     }
 }
