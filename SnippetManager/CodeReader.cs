@@ -8,8 +8,6 @@ namespace SnippetManager
     /// </summary>
     public class CodeReader
     {
-        const string SnippetTag = "//$";
-
         readonly IReadOnlyCollection<string> codeLines;
 
         public CodeReader(string[] codeLines)
@@ -54,9 +52,9 @@ namespace SnippetManager
         {
             var trim = line.Trim(' ', '\t');
 
-            if (trim.StartsWith(SnippetTag))
+            if (trim.StartsWith(Const.SnippetTag))
             {
-                title = trim.Remove(0, SnippetTag.Length).Trim(' ');
+                title = trim.Remove(0, Const.SnippetTag.Length).Trim(' ');
                 return true;
             }
 

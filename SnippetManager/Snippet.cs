@@ -1,21 +1,19 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Dynamic;
 using System.Linq;
 
 namespace SnippetManager
 {
     public class Snippet : IEquatable<Snippet>
     {
-        public string Title { get; }
-        public string Description { get; }
-
-        const string DiscriptionTag = "//@";
+        readonly string title;
         readonly IReadOnlyCollection<string> codeLines;
+
+        public string Description { get; }
 
         public Snippet(string title, IReadOnlyCollection<string> codeLines)
         {
-            Title = title;
+            this.title = title;
             this.codeLines = codeLines;
             Description = GetDescription();
         }
@@ -25,9 +23,9 @@ namespace SnippetManager
             foreach (var line in codeLines)
             {
                 var trim = line.Trim(' ', '\t');
-                if (trim.StartsWith(DiscriptionTag))
+                if (trim.StartsWith(Const.DescriptionTag))
                 {
-                    return trim.Remove(0, DiscriptionTag.Length).Trim(' ');
+                    return trim.Remove(0, Const.DescriptionTag.Length).Trim(' ');
                 }
             }
             return null;
@@ -40,7 +38,7 @@ namespace SnippetManager
 
         public bool Equals(Snippet other)
         {
-            return other != null && Title == other.Title && codeLines.SequenceEqual(other.codeLines);
+            return other != null && title == other.title && codeLines.SequenceEqual(other.codeLines);
         }
     }
 }
