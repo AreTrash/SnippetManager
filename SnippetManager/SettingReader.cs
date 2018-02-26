@@ -5,12 +5,12 @@ namespace SnippetManager
 {
     public class SettingReader
     {
-        readonly IReadOnlyCollection<string> settings;
+        readonly IEnumerable<string> settings;
 
         public string CodeFolderPath { get; }
         public string VisualStudioSnippetFolderPath { get; }
 
-        public SettingReader(IReadOnlyCollection<string> settings)
+        public SettingReader(IEnumerable<string> settings)
         {
             this.settings = settings;
             CodeFolderPath = ReadStringSetting(nameof(CodeFolderPath));
