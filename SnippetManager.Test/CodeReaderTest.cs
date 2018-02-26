@@ -17,8 +17,8 @@ namespace SnippetManager.Test
                 "ZZZ",
             };
 
-            var exp = new Snippet("Hoge", new[] {"YYY"});
-            var act = new CodeReader(codeLines).GetSnippetInfos().Single();
+            var exp = new[] {new Snippet("Hoge", new[] {"YYY"})};
+            var act = new CodeReader(codeLines).GetSnippetInfos();
             Assert.Equal(exp, act);
         }
 
@@ -62,8 +62,8 @@ namespace SnippetManager.Test
                 "ZZZ",
             };
 
-            var exp = new Snippet("Hoge", new[] { "YYY", "ZZZ" });
-            var act = new CodeReader(codeLines).GetSnippetInfos().Single();
+            var exp = new[] {new Snippet("Hoge", new[] {"YYY", "ZZZ"})};
+            var act = new CodeReader(codeLines).GetSnippetInfos();
             Assert.Equal(exp, act);
         }
 
