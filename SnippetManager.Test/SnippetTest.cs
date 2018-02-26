@@ -7,11 +7,21 @@ namespace SnippetManager.Test
         [Fact]
         public void Description()
         {
-            var exitDescSnippet = new Snippet("Hoge", new[] { "//@ Hello, World!!", "AAA", });
-            Assert.Equal("Hello, World!!", exitDescSnippet.Description);
+            var existDescSnippet = new Snippet("Hoge", new[] { "//@ Hello, World!!", "AAA", });
+            Assert.Equal("Hello, World!!", existDescSnippet.Description);
 
-            var nonDescSnippet = new Snippet("Hoge", new[] { "AAA", });
-            Assert.Null(nonDescSnippet.Description);
+            var notExistDescSnippet = new Snippet("Hoge", new[] {"AAA",});
+            Assert.Null(notExistDescSnippet.Description);
+        }
+
+        [Fact]
+        public void Shortcut()
+        {
+            var existOtherSnippet = new Snippet("Hoge", new []{"//$Fuga", "AAA", "//$Fuga"});
+            Assert.Equal("HogeFull", existOtherSnippet.Shortcut);
+
+            var notExistOtherSnippet = new Snippet("Hoge", new[] {"AAA",});
+            Assert.Equal("Hoge", notExistOtherSnippet.Shortcut);
         }
 
         [Fact]

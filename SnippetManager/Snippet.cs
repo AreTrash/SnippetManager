@@ -10,12 +10,14 @@ namespace SnippetManager
         readonly IReadOnlyCollection<string> codeLines;
 
         public string Description { get; }
+        public string Shortcut { get; }
 
         public Snippet(string title, IReadOnlyCollection<string> codeLines)
         {
             this.title = title;
             this.codeLines = codeLines;
             Description = GetDescription();
+            Shortcut = GetShortcut();
         }
 
         string GetDescription()
@@ -29,6 +31,20 @@ namespace SnippetManager
                 }
             }
             return null;
+        }
+
+        string GetShortcut()
+        {
+            return title + (IsIncludeOtherSnippet() ? Const.FullSnippetSuffic : "");
+        }
+
+        bool IsIncludeOtherSnippet()
+        {
+            foreach (var line in codeLines)
+            {
+                if (line.Trim(' ', '\t').StartsWith(Const.SnippetTag)) return true;
+            }
+            return false;
         }
 
         public IEnumerable<string> GetSnippetCode()
