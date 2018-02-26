@@ -7,9 +7,13 @@
 
         public const string OnlySnippetSuffix = "Only";
 
+
         public const string SettingsFileName = "Settings.txt";
         public const string VisualStudioCodeSnippetFileTemplateName = "Template.snippet";
         public const string ReSharperLiveTemplateTemplateName = "Template.DotSettings";
 
+        public const string CodeFolderPathSettingName = "CodeFolderPath";
+        public const string VisualStudioCodeSnippetFolderPathSettingName = "VSSnippetFolderPath";
+        public const string ReSharperLiveTemplateFolderPathSettingName = "RSLiveTemplateFolderPath";
     }
 }

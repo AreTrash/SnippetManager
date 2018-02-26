@@ -10,38 +10,44 @@ namespace SnippetManager
     {
         static void Main(string[] args)
         {
-            var settingReader = GetSettingReader();
+            if (!TryReadAllText(Const.SettingsFileName, out var settingFileText))
+            {
+                Console.WriteLine($"Not Found {Const.SettingsFileName}. Make {Const.SettingsFileName} in directory same as application(.exe).");
+                return;
+            }
+
+            var settingReader = new SettingReader(settingFileText.Split('\n'));
             var snippets = GetAllSnippets(settingReader.CodeFolderPath).ToArray();
+        
+            WriteCodeSnippets(
+                new VisualStudioCodeSnippetGenerator(snippets),
+                Const.VisualStudioCodeSnippetFileTemplateName,
+                settingReader.VisualStudioCodeSnippetFolderPath,
+                "VisualStudioCodeSnippet\n{0}\nCreate This?"
+            );
 
-            Console.WriteLine($"Create VisualStudio Code Snippets in {Directory.GetCurrentDirectory()}{settingReader.VSSnippetFolderPath}");
-            Console.WriteLine("[Y/N]");
-            if (Console.ReadLine()?.Trim() == "Y") WriteMsCodeSnippets(snippets, settingReader.VSSnippetFolderPath);
-
-            Console.WriteLine($"Create ReSharper Live Template in {Directory.GetCurrentDirectory()}{settingReader.VSSnippetFolderPath}");
-            Console.WriteLine("[Y/N]");
-            if (Console.ReadLine()?.Trim() == "Y") WriteReSharperLiveTemplates(snippets);
+            WriteCodeSnippets(
+                new ReSharperLiveTemplateGenerator(snippets),
+                Const.ReSharperLiveTemplateTemplateName,
+                settingReader.ReSharperLiveTemplateFolderPath,
+                "ReSharperLiveTemplate\n{0}\n Create This?"
+            );
 
             Console.WriteLine("Done");
-            Console.ReadLine();
         }
 
-        static void SettingFileCheck(string fileName)
+        static bool TryReadAllText(string filePath, out string allText)
         {
-            if (!File.Exists(fileName))
+            if (File.Exists(filePath))
             {
-                throw new Exception($"{fileName}が見つかりません。実行ファイルと同じディレクトリに{fileName}を作成してください");
+                allText = File.ReadAllText(filePath);
+                return true;
             }
-        }
-
-        static void CreateDirectoryIfEmpty(string path)
-        {
-            if (!Directory.Exists(path)) Directory.CreateDirectory(path);
-        }
-
-        static SettingReader GetSettingReader()
-        {
-            SettingFileCheck(Const.SettingsFileName);
-            return new SettingReader(File.ReadAllLines(Const.SettingsFileName));
+            else
+            {
+                allText = null;
+                return false;
+            }
         }
 
         static IEnumerable<Snippet> GetAllSnippets(string codeFolderPath)
@@ -63,49 +69,31 @@ namespace SnippetManager
             return defaultSnippet.Concat(snippetRemoveNested);
         }
 
-        static void WriteMsCodeSnippets(IEnumerable<Snippet> snippets, string visualStudioSnippetFolderPath)
+        static void WriteCodeSnippets(ISnippetGenerator snippetGenerator, string templateName, string folderPath, string message)
         {
-            SettingFileCheck(Const.VisualStudioCodeSnippetFileTemplateName);
+            var di = new DirectoryInfo(folderPath);
+            Console.WriteLine($"{string.Format(message, di.FullName)}");
+            Console.WriteLine("[Y/N]");
 
-            var template = File.ReadAllText(Const.VisualStudioCodeSnippetFileTemplateName);
-
-            const string MsCodeSnippets = "MsCodeSnippets";
-            CreateDirectoryIfEmpty(MsCodeSnippets);
-
-            var willCreateVisualStudioSnippet = !string.IsNullOrWhiteSpace(visualStudioSnippetFolderPath);
-            if (willCreateVisualStudioSnippet) CreateDirectoryIfEmpty(visualStudioSnippetFolderPath);
-
-            foreach (var snippet in snippets)
+            if (Console.ReadLine()?.Trim().ToUpper() != "Y")
             {
-                var mcsg = new MicrosoftCodeSnippetGenerator(snippet, template);
-                File.WriteAllText($@"{MsCodeSnippets}\{snippet.Shortcut}.snippet", mcsg.GetSnippetCode());
-
-                if (willCreateVisualStudioSnippet)
-                {
-                    File.WriteAllText($@"{visualStudioSnippetFolderPath}\{snippet.Shortcut}.snippet", mcsg.GetSnippetCode());
-                }
+                Console.WriteLine("Creation was canceled");
+                return;
             }
-        }
-
-        static void WriteReSharperLiveTemplates(IEnumerable<Snippet> snippets)
-        {
-            SettingFileCheck(Const.ReSharperLiveTemplateTemplateName);
-
-            var template = File.ReadAllText(Const.ReSharperLiveTemplateTemplateName);
-
-            const string ReShapeLiveTemplatesFolder = "RsLiveTemplates";
-            CreateDirectoryIfEmpty(ReShapeLiveTemplatesFolder);
-
-            var sb = new StringBuilder();
-            sb.Append("<wpf:ResourceDictionary xml:space=\"preserve\" xmlns:x=\"http://schemas.microsoft.com/winfx/2006/xaml\" xmlns:s=\"clr-namespace:System;assembly=mscorlib\" xmlns:ss=\"urn:shemas-jetbrains-com:settings-storage-xaml\" xmlns:wpf=\"http://schemas.microsoft.com/winfx/2006/xaml/presentation\">");
-            foreach (var snippet in snippets)
+            if (!TryReadAllText(templateName, out var template))
             {
-                var rsltg = new ReSharperLiveTemplateGenerator(snippet, template);
-                sb.Append("\n" + rsltg.GetSnippetCode());
+                Console.WriteLine($"Not Found {Const.SettingsFileName}. Make {Const.SettingsFileName} in directory same as application(.exe).");
+                return;
             }
-            sb.Append("</wpf:ResourceDictionary>");
 
-            File.WriteAllText($@"{ReShapeLiveTemplatesFolder}\RsLiveTemplates.DotSettings", sb.ToString());
+            if (!Directory.Exists(folderPath)) Directory.CreateDirectory(folderPath);
+
+            foreach (var (fileName, code) in snippetGenerator.GetCodeSnippets(template))
+            {
+                File.WriteAllText($@"{folderPath}\{fileName}", code);
+            }
+
+            Console.WriteLine("Create Successfully");
         }
     }
 }

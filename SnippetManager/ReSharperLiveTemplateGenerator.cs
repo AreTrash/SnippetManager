@@ -1,22 +1,29 @@
-﻿using System;
+﻿using System.Collections.Generic;
 using System.Linq;
 using System.Security.Cryptography;
 using System.Text;
 
 namespace SnippetManager
 {
-    public class ReSharperLiveTemplateGenerator
+    public class ReSharperLiveTemplateGenerator: ISnippetGenerator
     {
-        readonly Snippet snippet;
-        readonly string template;
+        readonly IEnumerable<Snippet> snippets;
 
-        public ReSharperLiveTemplateGenerator(Snippet snippet, string template)
+        public ReSharperLiveTemplateGenerator(IEnumerable<Snippet> snippets)
         {
-            this.snippet = snippet;
-            this.template = template;
+            this.snippets = snippets;
         }
 
-        public string GetSnippetCode()
+        public IEnumerable<(string fileName, string code)> GetCodeSnippets(string template)
+        {
+            var sb = new StringBuilder();
+            sb.Append("<wpf:ResourceDictionary xml:space=\"preserve\" xmlns:x=\"http://schemas.microsoft.com/winfx/2006/xaml\" xmlns:s=\"clr-namespace:System;assembly=mscorlib\" xmlns:ss=\"urn:shemas-jetbrains-com:settings-storage-xaml\" xmlns:wpf=\"http://schemas.microsoft.com/winfx/2006/xaml/presentation\">");
+            foreach (var snippet in snippets) sb.Append("\n" + GetSnippetCode(template, snippet));
+            sb.Append("</wpf:ResourceDictionary>");
+            yield return ("RsLiveTemplates.DotSettings", sb.ToString());
+        }
+
+        string GetSnippetCode(string template, Snippet snippet)
         {
             var code = snippet.GetSnippetCode()
                 .Select(line => line.Replace("&", "&amp;").Replace("<", "&lt;").Replace(">", "&gt;"))
