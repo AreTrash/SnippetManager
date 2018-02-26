@@ -23,9 +23,9 @@ namespace SnippetManager
         string GetDescription()
         {
             return codeLines
-                .Select(line => line.Trim(' ', '\t'))
+                .Select(line => line.Trim())
                 .Where(trim => trim.StartsWith(Const.DescriptionTag))
-                .Select(trim => trim.Remove(0, Const.DescriptionTag.Length).Trim(' '))
+                .Select(trim => trim.Remove(0, Const.DescriptionTag.Length).Trim())
                 .FirstOrDefault();
         }
 
@@ -36,7 +36,7 @@ namespace SnippetManager
 
         bool IsIncludeOtherSnippet()
         {
-            return codeLines.Any(line => line.Trim(' ', '\t').StartsWith(Const.SnippetTag));
+            return codeLines.Any(line => line.Trim().StartsWith(Const.SnippetTag));
         }
 
         public IEnumerable<string> GetSnippetCode()

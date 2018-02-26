@@ -40,8 +40,8 @@ namespace SnippetManager
 
         bool IsSnippetTag(string line, out string title)
         {
-            var trim = line.Trim(' ', '\t');
-            title = trim.Remove(0, Const.SnippetTag.Length).Trim(' ');
+            var trim = line.Trim();
+            title = trim.Remove(0, Const.SnippetTag.Length).Trim();
             return trim.StartsWith(Const.SnippetTag);
         }
     }

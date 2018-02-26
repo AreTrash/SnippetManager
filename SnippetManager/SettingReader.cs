@@ -22,7 +22,7 @@ namespace SnippetManager
             var formattedSettings = settings
                 .Where(line => line.Contains('='))
                 .Select(line => line.Split('='))
-                .Select(sp => (name: sp[0].Trim(' '), body: sp[1].Trim(' ').Trim('"')));
+                .Select(sp => (name: sp[0].Trim(), body: sp[1].Trim().Trim('"')));
 
             return formattedSettings
                 .Where(fs => fs.name == name)
