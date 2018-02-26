@@ -46,6 +46,52 @@ namespace SnippetManager
                 .Where(line => !line.Trim().StartsWith(Const.SnippetTag));
         }
 
+        enum State
+        {
+            Keep,
+            Remove,
+        }
+
+        //XXX なんか良くならないかなあ…
+        public bool TryGetSnippetRemovedNestedSnippet(out Snippet snippet)
+        {
+            if (!IsIncludeOtherSnippet())
+            {
+                snippet = null;
+                return false;
+            }
+
+            var ret = new List<string>();
+            var state = State.Keep;
+            var search = "";
+
+            foreach (var line in codeLines)
+            {
+                if (state == State.Keep)
+                {
+                    if (line.Trim().StartsWith(Const.SnippetTag))
+                    {
+                        search = line.Trim();
+                        state = State.Remove;
+                    }
+                    else
+                    {
+                        ret.Add(line);
+                    }
+                }
+                else if (state == State.Remove)
+                {
+                    if (line.Trim() == search)
+                    {
+                        state = State.Keep;
+                    }
+                }
+            }
+
+            snippet = new Snippet(title, ret);
+            return true;
+        }
+
         public bool Equals(Snippet other)
         {
             return other != null && title == other.title && codeLines.SequenceEqual(other.codeLines);
