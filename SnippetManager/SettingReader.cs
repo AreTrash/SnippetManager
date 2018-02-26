@@ -18,9 +18,9 @@ namespace SnippetManager
 
         string ReadStringSetting(string name)
         {
-            foreach (var fs in GetFormattedSettings())
+            foreach (var (_name, body) in GetFormattedSettings())
             {
-                if (fs.name == name) return fs.body;
+                if (_name == name) return body;
             }
             return null;
         }
