@@ -31,7 +31,7 @@ namespace SnippetManager
 
         string GetShortcut()
         {
-            return title + (IsIncludeOtherSnippet() ? Const.FullSnippetSuffix : "");
+            return title + (!IsIncludeOtherSnippet() ? Const.OnlySnippetSuffix : "");
         }
 
         bool IsIncludeOtherSnippet()

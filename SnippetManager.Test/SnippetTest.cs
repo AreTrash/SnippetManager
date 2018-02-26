@@ -18,10 +18,10 @@ namespace SnippetManager.Test
         public void Shortcut()
         {
             var existOtherSnippet = new Snippet("Hoge", new []{"//$Fuga", "AAA", "//$Fuga"});
-            Assert.Equal("HogeFull", existOtherSnippet.Shortcut);
+            Assert.Equal("Hoge", existOtherSnippet.Shortcut);
 
             var notExistOtherSnippet = new Snippet("Hoge", new[] {"AAA",});
-            Assert.Equal("Hoge", notExistOtherSnippet.Shortcut);
+            Assert.Equal("HogeOnly", notExistOtherSnippet.Shortcut);
         }
 
         [Fact]

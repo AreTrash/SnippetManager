@@ -5,6 +5,6 @@
         public const string DescriptionTag = "//@";
         public const string SnippetTag = "//$";
 
-        public const string FullSnippetSuffix = "Full";
+        public const string OnlySnippetSuffix = "Only";
     }
 }
