@@ -30,5 +30,27 @@ namespace SnippetManager.Test
             var snippet = new Snippet("Hoge", new[] { "AAA", "BBB", "CCC" });
             Assert.Equal(new[] { "AAA", "BBB", "CCC" }, snippet.GetSnippetCode());
         }
+
+        [Fact]
+        public void GetSnippetCodeExistDescription()
+        {
+            var snippet = new Snippet("Hoge", new []{"//@ Hello, World!", "AAA"});
+            Assert.Equal(new[] {"AAA"}, snippet.GetSnippetCode());
+        }
+
+        [Fact]
+        public void GetSnippetCodeExistNestedSnippet()
+        {
+            var codeLines = new[]
+            {
+                "AAA",
+                "//$Fuga",
+                "BBB",
+                "//$Fuga",
+                "CCC",
+            };
+            var snippet = new Snippet("Hoge", codeLines);
+            Assert.Equal(new[] {"AAA", "BBB", "CCC"}, snippet.GetSnippetCode());
+        }
     }
 }

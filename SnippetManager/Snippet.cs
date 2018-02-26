@@ -41,7 +41,9 @@ namespace SnippetManager
 
         public IEnumerable<string> GetSnippetCode()
         {
-            return codeLines;
+            return codeLines
+                .Where(line => !line.Trim().StartsWith(Const.DescriptionTag))
+                .Where(line => !line.Trim().StartsWith(Const.SnippetTag));
         }
 
         public bool Equals(Snippet other)
