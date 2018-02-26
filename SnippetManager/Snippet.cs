@@ -22,29 +22,21 @@ namespace SnippetManager
 
         string GetDescription()
         {
-            foreach (var line in codeLines)
-            {
-                var trim = line.Trim(' ', '\t');
-                if (trim.StartsWith(Const.DescriptionTag))
-                {
-                    return trim.Remove(0, Const.DescriptionTag.Length).Trim(' ');
-                }
-            }
-            return null;
+            return codeLines
+                .Select(line => line.Trim(' ', '\t'))
+                .Where(trim => trim.StartsWith(Const.DescriptionTag))
+                .Select(trim => trim.Remove(0, Const.DescriptionTag.Length).Trim(' '))
+                .FirstOrDefault();
         }
 
         string GetShortcut()
         {
-            return title + (IsIncludeOtherSnippet() ? Const.FullSnippetSuffic : "");
+            return title + (IsIncludeOtherSnippet() ? Const.FullSnippetSuffix : "");
         }
 
         bool IsIncludeOtherSnippet()
         {
-            foreach (var line in codeLines)
-            {
-                if (line.Trim(' ', '\t').StartsWith(Const.SnippetTag)) return true;
-            }
-            return false;
+            return codeLines.Any(line => line.Trim(' ', '\t').StartsWith(Const.SnippetTag));
         }
 
         public IEnumerable<string> GetSnippetCode()

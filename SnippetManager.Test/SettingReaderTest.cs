@@ -9,9 +9,9 @@ namespace SnippetManager.Test
         {
             var settings = new[]
             {
+                "NotExistEqualLine",
                 "CodeFolderPath=\"hogehoge\"",
                 "VisualStudioSnippetFolderPath = fugafuga",
-                "UpdateVisualStudioSnippet=true",
             };
 
             var sr = new SettingReader(settings);

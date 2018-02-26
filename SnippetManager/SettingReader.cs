@@ -1,15 +1,16 @@
 ﻿using System.Collections.Generic;
+using System.Linq;
 
 namespace SnippetManager
 {
     public class SettingReader
     {
+        readonly IReadOnlyCollection<string> settings;
+
         public string CodeFolderPath { get; }
         public string VisualStudioSnippetFolderPath { get; }
 
-        readonly IReadOnlyCollection<string> settings;
-
-        public SettingReader(string[] settings)
+        public SettingReader(IReadOnlyCollection<string> settings)
         {
             this.settings = settings;
             CodeFolderPath = ReadStringSetting(nameof(CodeFolderPath));
@@ -18,20 +19,15 @@ namespace SnippetManager
 
         string ReadStringSetting(string name)
         {
-            foreach (var (_name, body) in GetFormattedSettings())
-            {
-                if (_name == name) return body;
-            }
-            return null;
-        }
+            var formattedSettings = settings
+                .Where(line => line.Contains('='))
+                .Select(line => line.Split('='))
+                .Select(sp => (name: sp[0].Trim(' '), body: sp[1].Trim(' ').Trim('"')));
 
-        IEnumerable<(string name, string body)> GetFormattedSettings()
-        {
-            foreach (var setting in settings)
-            {
-                var sp = setting.Split('=');
-                yield return (sp[0].Trim(' '), sp[1].Trim(' ').Trim('"'));
-            }
+            return formattedSettings
+                .Where(fs => fs.name == name)
+                .Select(fs => fs.body)
+                .FirstOrDefault();
         }
     }
 }
