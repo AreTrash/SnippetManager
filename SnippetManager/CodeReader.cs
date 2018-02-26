@@ -8,9 +8,9 @@ namespace SnippetManager
     /// </summary>
     public class CodeReader
     {
-        readonly IReadOnlyCollection<string> codeLines;
+        readonly IEnumerable<string> codeLines;
 
-        public CodeReader(string[] codeLines)
+        public CodeReader(IEnumerable<string> codeLines)
         {
             this.codeLines = codeLines;
         }
@@ -21,30 +21,20 @@ namespace SnippetManager
 
             foreach (var (line, i) in codeLines.Select((line, i) => (line, i)))
             {
-                if (IsSnippetTag(line, out var title) && !usedRows.Contains(i))
-                {
-                    yield return GetSnippetInfo(title, i + 1, out var endRow);
-                    usedRows.Add(endRow);
-                }
+                if (!IsSnippetTag(line, out var title) || usedRows.Contains(i)) continue;
+                yield return GetSnippetInfo(title, i + 1, out var endRow);
+                usedRows.Add(endRow);
             }
         }
 
         Snippet GetSnippetInfo(string title, int startRow, out int endRow)
         {
-            var snippetLines = new List<string>();
+            var snippetLines = codeLines
+                .Skip(startRow)
+                .TakeWhile(line => !IsSnippetTag(line, out var _title) || _title != title)
+                .ToArray();
 
-            foreach (var (line, i) in codeLines.Skip(startRow).Select((line, i) => (line, i)))
-            {
-                if (IsSnippetTag(line, out var _title) && _title == title)
-                {
-                    endRow = i + startRow;
-                    return new Snippet(title, snippetLines);
-                }
-
-                snippetLines.Add(line);
-            }
-
-            endRow = codeLines.Count;
+            endRow = startRow + snippetLines.Length;
             return new Snippet(title, snippetLines);
         }
 

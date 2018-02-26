@@ -7,12 +7,12 @@ namespace SnippetManager
     public class Snippet : IEquatable<Snippet>
     {
         readonly string title;
-        readonly IReadOnlyCollection<string> codeLines;
+        readonly IEnumerable<string> codeLines;
 
         public string Description { get; }
         public string Shortcut { get; }
 
-        public Snippet(string title, IReadOnlyCollection<string> codeLines)
+        public Snippet(string title, IEnumerable<string> codeLines)
         {
             this.title = title;
             this.codeLines = codeLines;
