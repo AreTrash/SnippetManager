@@ -44,8 +44,10 @@
   <ItemGroup>
     <Compile Include="CodeReader.cs" />
     <Compile Include="Const.cs" />
+    <Compile Include="MicrosoftCodeSnippetGenerator.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="ReSharperLiveTemplateGenerator.cs" />
     <Compile Include="SettingReader.cs" />
     <Compile Include="Snippet.cs" />
   </ItemGroup>

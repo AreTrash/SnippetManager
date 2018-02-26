@@ -8,13 +8,13 @@ namespace SnippetManager
         readonly IEnumerable<string> settings;
 
         public string CodeFolderPath { get; }
-        public string VisualStudioSnippetFolderPath { get; }
+        public string VSSnippetFolderPath { get; }
 
         public SettingReader(IEnumerable<string> settings)
         {
             this.settings = settings;
             CodeFolderPath = ReadStringSetting(nameof(CodeFolderPath));
-            VisualStudioSnippetFolderPath = ReadStringSetting(nameof(VisualStudioSnippetFolderPath));
+            VSSnippetFolderPath = ReadStringSetting(nameof(VSSnippetFolderPath));
         }
 
         string ReadStringSetting(string name)

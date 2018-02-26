@@ -11,12 +11,12 @@ namespace SnippetManager.Test
             {
                 "NotExistEqualLine",
                 "CodeFolderPath=\"hogehoge\"",
-                "VisualStudioSnippetFolderPath = fugafuga",
+                "VSSnippetFolderPath = fugafuga",
             };
 
             var sr = new SettingReader(settings);
             Assert.Equal("hogehoge", sr.CodeFolderPath);
-            Assert.Equal("fugafuga", sr.VisualStudioSnippetFolderPath);
+            Assert.Equal("fugafuga", sr.VSSnippetFolderPath);
         }
 
         [Fact]
