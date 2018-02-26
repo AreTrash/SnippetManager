@@ -31,7 +31,7 @@ namespace SnippetManager
 
         string GetShortcut()
         {
-            return title + (!IsIncludeOtherSnippet() ? Const.OnlySnippetSuffix : "");
+            return title;
         }
 
         bool IsIncludeOtherSnippet()
@@ -88,7 +88,7 @@ namespace SnippetManager
                 }
             }
 
-            snippet = new Snippet(title, ret);
+            snippet = new Snippet(title + Const.OnlySnippetSuffix, ret);
             return true;
         }
 

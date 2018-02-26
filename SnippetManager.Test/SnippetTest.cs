@@ -20,8 +20,11 @@ namespace SnippetManager.Test
             var existOtherSnippet = new Snippet("Hoge", new []{"//$Fuga", "AAA", "//$Fuga"});
             Assert.Equal("Hoge", existOtherSnippet.Shortcut);
 
+            existOtherSnippet.TryGetSnippetRemovedNestedSnippet(out var removeOtherSnippet);
+            Assert.Equal("HogeOnly", removeOtherSnippet.Shortcut);
+
             var notExistOtherSnippet = new Snippet("Hoge", new[] {"AAA",});
-            Assert.Equal("HogeOnly", notExistOtherSnippet.Shortcut);
+            Assert.Equal("Hoge", notExistOtherSnippet.Shortcut);
         }
 
         [Fact]
@@ -79,7 +82,7 @@ namespace SnippetManager.Test
             };
             var oldSnippet = new Snippet("Hoge", codeLines);
             Assert.True(oldSnippet.TryGetSnippetRemovedNestedSnippet(out var newSnippet));
-            Assert.Equal(new Snippet("Hoge", new[] {"AAA", "CCC"}), newSnippet);
+            Assert.Equal(new Snippet("HogeOnly", new[] {"AAA", "CCC"}), newSnippet);
         }
 
         [Fact]
@@ -100,7 +103,7 @@ namespace SnippetManager.Test
             };
             var oldSnippet = new Snippet("Hoge", codeLines);
             Assert.True(oldSnippet.TryGetSnippetRemovedNestedSnippet(out var newSnippet));
-            Assert.Equal(new Snippet("Hoge", new[] { "XXX", "AAA" }), newSnippet);
+            Assert.Equal(new Snippet("HogeOnly", new[] { "XXX", "AAA" }), newSnippet);
         }
     }
 }
