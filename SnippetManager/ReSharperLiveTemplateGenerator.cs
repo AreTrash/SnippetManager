@@ -73,6 +73,7 @@ namespace SnippetManager
                 yield return GetElem(GetKey("Shortcut/@EntryValue"), snippet.Shortcut);
                 yield return GetElem(GetKey("Description/@EntryValue"), snippet.Description);
                 yield return GetElem(GetKey("Text/@EntryValue"), string.Join("\n", snippet.GetSnippetCode("$SELECTION$", "$END$")));
+                yield return GetElem(GetKey("IsBlessed/@EntryValue"), true);
                 yield return GetElem(GetKey("Reformat/@EntryValue"), true);
                 yield return GetElem(GetKey("ShortenQualifiedReferences/@EntryValue"), true);
                 yield return GetElem(GetKey("Applicability/=Live/@EntryIndexedValue"), true);
