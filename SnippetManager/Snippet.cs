@@ -17,7 +17,7 @@ namespace SnippetManager
             this.title = title;
             this.codeLines = codeLines;
             Description = GetDescription();
-            Shortcut = GetShortcut();
+            Shortcut = title;
         }
 
         string GetDescription()
@@ -27,16 +27,6 @@ namespace SnippetManager
                 .Where(trim => trim.StartsWith(Const.DescriptionTag))
                 .Select(trim => trim.Remove(0, Const.DescriptionTag.Length).Trim())
                 .FirstOrDefault();
-        }
-
-        string GetShortcut()
-        {
-            return title;
-        }
-
-        bool IsIncludeOtherSnippet()
-        {
-            return codeLines.Any(line => line.Trim().StartsWith(Const.SnippetTag));
         }
 
         public IEnumerable<string> GetSnippetCode()
@@ -52,10 +42,9 @@ namespace SnippetManager
             Remove,
         }
 
-        //XXX なんか良くならないかなあ…
         public bool TryGetSnippetRemovedNestedSnippet(out Snippet snippet)
         {
-            if (!IsIncludeOtherSnippet())
+            if (codeLines.All(line => !line.Trim().StartsWith(Const.SnippetTag)))
             {
                 snippet = null;
                 return false;

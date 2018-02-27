@@ -34,6 +34,7 @@ namespace SnippetManager
             );
 
             Console.WriteLine("Done");
+            Console.ReadLine();
         }
 
         static bool TryReadAllText(string filePath, out string allText)
