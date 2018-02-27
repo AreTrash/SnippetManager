@@ -4,7 +4,7 @@ using System.Linq;
 
 namespace SnippetManager
 {
-    public class VisualStudioCodeSnippetGenerator: ISnippetGenerator
+    public class VisualStudioCodeSnippetGenerator : ISnippetGenerator
     {
         readonly IEnumerable<Snippet> snippets;
 
@@ -27,6 +27,5 @@ namespace SnippetManager
                 .Replace("{Author}", "UnKnown")
                 .Replace("{Code}", string.Join(Environment.NewLine, snippet.GetSnippetCode()));
         }
-
     }
 }

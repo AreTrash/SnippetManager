@@ -18,7 +18,7 @@ namespace SnippetManager
 
             var settingReader = new SettingReader(settingFileText.Split('\n'));
             var snippets = GetAllSnippets(settingReader.CodeFolderPath).ToArray();
-        
+
             WriteCodeSnippets(
                 new VisualStudioCodeSnippetGenerator(snippets),
                 Const.VisualStudioCodeSnippetFileTemplateName,
