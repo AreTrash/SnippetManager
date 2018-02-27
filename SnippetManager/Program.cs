@@ -13,7 +13,10 @@ namespace SnippetManager
         {
             if (!TryReadAllText(Const.SettingsFileName, out var settingFileText))
             {
-                Console.WriteLine($"Not Found {Const.SettingsFileName}. Make {Const.SettingsFileName} in directory same as application(.exe).");
+                Console.WriteLine(
+                    $"Not Found \"{Const.SettingsFileName}\".\n" +
+                    $"Put it in the same directory as the application(.exe)."
+                );
                 return;
             }
 
@@ -32,7 +35,7 @@ namespace SnippetManager
                 settingReader.ReSharperLiveTemplateFolderPath
             );
 
-            Console.WriteLine("Done");
+            Console.WriteLine("ALL Done");
             Console.ReadLine();
         }
 
@@ -74,11 +77,11 @@ namespace SnippetManager
             var di = new DirectoryInfo(folderPath);
             Console.WriteLine($"[{snippetGenerator.GetType().Name}]");
             Console.WriteLine($"Location: {di.FullName}");
-            Console.WriteLine("Create this ? [Y/N]");
+            Console.WriteLine("Create this? [Y/N]");
 
             if (Console.ReadLine()?.Trim().ToUpper() != "Y")
             {
-                Console.WriteLine("Creation was canceled");
+                Console.WriteLine("It was canceled.");
                 return;
             }
 
@@ -89,7 +92,7 @@ namespace SnippetManager
                 xDoc.Save($@"{folderPath}\{fileName}");
             }
 
-            Console.WriteLine("Create Successfully");
+            Console.WriteLine("Create successfully.");
         }
     }
 }
