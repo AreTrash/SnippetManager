@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Text.RegularExpressions;
 
 namespace SnippetManager
 {
@@ -13,6 +14,7 @@ namespace SnippetManager
         public string Shortcut { get; }
         public bool ExistSelectedMarker { get; }
         public bool ExistEndMarker { get; }
+        public IEnumerable<string> Parameters { get; }
 
         public Snippet(string title, IEnumerable<string> codeLines)
         {
@@ -22,6 +24,7 @@ namespace SnippetManager
             Shortcut = title;//Shortcut and Title are the same due to めんどくさい.
             ExistSelectedMarker = ExistMarker(Const.SelectedMarker);
             ExistEndMarker = ExistMarker(Const.EndMarker);
+            Parameters = GetParameters();
         }
 
         string GetDescription()
@@ -38,6 +41,14 @@ namespace SnippetManager
             return codeLines.Any(line => line.Contains(marker) || line.Contains(marker.ToUpper()));
         }
 
+        IEnumerable<string> GetParameters()
+        {
+            return codeLines
+                .SelectMany(line => Regex.Matches(line, "__(.+?)__").Cast<Match>())
+                .Select(match => match.Value.Trim('_'))
+                .Distinct();
+        }
+
         public IEnumerable<string> GetSnippetCode(string selected, string end)
         {
             return codeLines
@@ -46,7 +57,8 @@ namespace SnippetManager
                 .Select(line => line.Replace(Const.SelectedMarker, selected))
                 .Select(line => line.Replace(Const.SelectedMarker.ToUpper(), selected))
                 .Select(line => line.Replace(Const.EndMarker, end))
-                .Select(line => line.Replace(Const.EndMarker.ToUpper(), end));
+                .Select(line => line.Replace(Const.EndMarker.ToUpper(), end))
+                .Select(line => Regex.Replace(line, "__(.+?)__", match => $"${match.Value.Trim('_')}$"));
         }
 
         enum State
@@ -55,6 +67,7 @@ namespace SnippetManager
             Remove,
         }
 
+        //なんかスマートな方法考えたい
         public bool TryGetSnippetRemovedNestedSnippet(out Snippet snippet)
         {
             if (codeLines.All(line => !line.Trim().StartsWith(Const.SnippetTag)))

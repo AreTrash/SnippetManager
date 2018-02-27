@@ -37,6 +37,12 @@ namespace SnippetManager.Test
         }
 
         [Fact]
+        public void Parameter()
+        {
+            Assert.Equal(new [] {"xxx"}, new Snippet("Hoge", new []{"__xxx__"}).Parameters);
+        }
+
+        [Fact]
         public void GetSimpleSnippetCode()
         {
             var snippet = new Snippet("Hoge", new[] { "AAA", "BBB", "CCC" });
@@ -91,6 +97,13 @@ namespace SnippetManager.Test
                 "OOO",
             };
             Assert.Equal(expected, snippet.GetSnippetCode("$S$", "$E$"));
+        }
+
+        [Fact]
+        public void GetSnippetCodeExistParameter()
+        {
+            Assert.Equal(new[] {"$apple$"}, new Snippet("Hoge", new[] {"__apple__"}).GetSnippetCode(null, null));
+            Assert.Equal(new[] {"_apple_"}, new Snippet("Hoge", new[] {"_apple_"}).GetSnippetCode(null, null));
         }
 
         [Fact]
