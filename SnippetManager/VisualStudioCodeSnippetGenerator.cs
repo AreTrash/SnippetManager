@@ -72,7 +72,7 @@ namespace SnippetManager
                 xDoc.Descendants("Shortcut").Single().Add(snippet.Shortcut);
                 xDoc.Descendants("Description").Single().Add(snippet.Description);
 
-                var code = string.Join(Environment.NewLine, snippet.GetSnippetCode());
+                var code = string.Join(Environment.NewLine, snippet.GetSnippetCode("$selected$", "$end$"));
                 xDoc.Descendants("Code").Single().Add(new XCData(code));
             }
 

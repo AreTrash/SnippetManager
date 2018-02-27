@@ -29,11 +29,15 @@ namespace SnippetManager
                 .FirstOrDefault();
         }
 
-        public IEnumerable<string> GetSnippetCode()
+        public IEnumerable<string> GetSnippetCode(string selected, string end)
         {
             return codeLines
                 .Where(line => !line.Trim().StartsWith(Const.DescriptionTag))
-                .Where(line => !line.Trim().StartsWith(Const.SnippetTag));
+                .Where(line => !line.Trim().StartsWith(Const.SnippetTag))
+                .Select(line => line.Replace(Const.SelectedMarker, selected))
+                .Select(line => line.Replace(Const.SelectedMarker.ToUpper(), selected))
+                .Select(line => line.Replace(Const.EndMarker, end))
+                .Select(line => line.Replace(Const.EndMarker.ToUpper(), end));
         }
 
         enum State

@@ -31,14 +31,14 @@ namespace SnippetManager.Test
         public void GetSimpleSnippetCode()
         {
             var snippet = new Snippet("Hoge", new[] { "AAA", "BBB", "CCC" });
-            Assert.Equal(new[] { "AAA", "BBB", "CCC" }, snippet.GetSnippetCode());
+            Assert.Equal(new[] { "AAA", "BBB", "CCC" }, snippet.GetSnippetCode(null, null));
         }
 
         [Fact]
         public void GetSnippetCodeExistDescription()
         {
             var snippet = new Snippet("Hoge", new []{"//@ Hello, World!", "AAA"});
-            Assert.Equal(new[] {"AAA"}, snippet.GetSnippetCode());
+            Assert.Equal(new[] {"AAA"}, snippet.GetSnippetCode(null, null));
         }
 
         [Fact]
@@ -53,7 +53,35 @@ namespace SnippetManager.Test
                 "CCC",
             };
             var snippet = new Snippet("Hoge", codeLines);
-            Assert.Equal(new[] {"AAA", "BBB", "CCC"}, snippet.GetSnippetCode());
+            Assert.Equal(new[] {"AAA", "BBB", "CCC"}, snippet.GetSnippetCode(null, null));
+        }
+
+        [Fact]
+        public void GetSnippetCodeExistSelectedAndEndMarker()
+        {
+            var codeLines = new[]
+            {
+                "/*$selected$*/",
+                "/*$SELECTED$*/",
+                "  /*$end$*/  ",
+                "oo/*$END$*/oo",
+                "/*$SeLeCtEd$*/",
+                "/* $END$ */",
+                "OOO",
+            };
+            var snippet = new Snippet("Hoge", codeLines);
+
+            var expected = new[]
+            {
+                "$S$",
+                "$S$",
+                "  $E$  ",
+                "oo$E$oo",
+                "/*$SeLeCtEd$*/",
+                "/* $END$ */",
+                "OOO",
+            };
+            Assert.Equal(expected, snippet.GetSnippetCode("$S$", "$E$"));
         }
 
         [Fact]
