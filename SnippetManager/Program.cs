@@ -22,16 +22,15 @@ namespace SnippetManager
 
             WriteCodeSnippets(
                 new VisualStudioCodeSnippetGenerator(snippets),
-                settingReader.VisualStudioCodeSnippetFolderPath,
-                "VisualStudioCodeSnippet\n{0}\nCreate This?"
+                settingReader.VisualStudioCodeSnippetFolderPath
             );
-            /*
+
+            Console.WriteLine();
+
             WriteCodeSnippets(
                 new ReSharperLiveTemplateGenerator(snippets),
-                Const.ReSharperLiveTemplateTemplateName,
-                settingReader.ReSharperLiveTemplateFolderPath,
-                "ReSharperLiveTemplate\n{0}\n Create This?"
-            );*/
+                settingReader.ReSharperLiveTemplateFolderPath
+            );
 
             Console.WriteLine("Done");
             Console.ReadLine();
@@ -70,11 +69,12 @@ namespace SnippetManager
             return defaultSnippet.Concat(snippetRemoveNested);
         }
 
-        static void WriteCodeSnippets(ISnippetGenerator snippetGenerator, string folderPath, string message)
+        static void WriteCodeSnippets(ISnippetGenerator snippetGenerator, string folderPath)
         {
             var di = new DirectoryInfo(folderPath);
-            Console.WriteLine($"{string.Format(message, di.FullName)}");
-            Console.WriteLine("[Y/N]");
+            Console.WriteLine($"[{snippetGenerator.GetType().Name}]");
+            Console.WriteLine($"Location: {di.FullName}");
+            Console.WriteLine("Create this ? [Y/N]");
 
             if (Console.ReadLine()?.Trim().ToUpper() != "Y")
             {
