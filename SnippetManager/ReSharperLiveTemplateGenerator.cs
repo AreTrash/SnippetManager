@@ -1,6 +1,4 @@
-﻿using System;
-using System.Collections;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
 using System.Security.Cryptography;
 using System.Text;
@@ -10,6 +8,21 @@ namespace SnippetManager
 {
     public class ReSharperLiveTemplateGenerator : ISnippetGenerator
     {
+        static readonly XNamespace x = "http://schemas.microsoft.com/winfx/2006/xaml";
+        static readonly XNamespace s = "clr-namespace:System;assembly=mscorlib";
+        static readonly XNamespace ss = "urn:shemas-jetbrains-com:settings-storage-xaml";
+        static readonly XNamespace wpf = "http://schemas.microsoft.com/winfx/2006/xaml/presentation";
+
+        static XDocument XDocMain => new XDocument(
+            new XElement(wpf + "ResourceDictionary",
+                new XAttribute(XNamespace.Xml + "space", "preserve"),
+                new XAttribute(XNamespace.Xmlns + "x", x),
+                new XAttribute(XNamespace.Xmlns + "s", s),
+                new XAttribute(XNamespace.Xmlns + "ss", ss),
+                new XAttribute(XNamespace.Xmlns + "wpf", wpf)
+            )
+        );
+
         readonly IEnumerable<Snippet> snippets;
 
         public ReSharperLiveTemplateGenerator(IEnumerable<Snippet> snippets)
@@ -19,7 +32,7 @@ namespace SnippetManager
 
         public IEnumerable<(string fileName, XDocument xDocument)> GetCodeSnippets()
         {
-            var xDoc = XDocMain();
+            var xDoc = XDocMain;
 
             var children = snippets.SelectMany(snippet => new Generator(snippet).GetXElements());
         
@@ -28,25 +41,6 @@ namespace SnippetManager
             xDoc.Element(wpf + "ResourceDictionary").Add(children);
 
             yield return ("RsLiveTemplates.DotSettings", xDoc);
-        }
-
-        static readonly XNamespace x = "http://schemas.microsoft.com/winfx/2006/xaml";
-        static readonly XNamespace s = "clr-namespace:System;assembly=mscorlib";
-        static readonly XNamespace ss = "urn:shemas-jetbrains-com:settings-storage-xaml";
-        static readonly XNamespace wpf = "http://schemas.microsoft.com/winfx/2006/xaml/presentation";
-
-        static XDocument XDocMain()
-        {
-            return
-                new XDocument(
-                    new XElement(wpf + "ResourceDictionary",
-                        new XAttribute(XNamespace.Xml + "space", "preserve"),
-                        new XAttribute(XNamespace.Xmlns + "x", x),
-                        new XAttribute(XNamespace.Xmlns + "s", s),
-                        new XAttribute(XNamespace.Xmlns + "ss", ss),
-                        new XAttribute(XNamespace.Xmlns + "wpf", wpf)
-                    )
-                );
         }
 
         class Generator
@@ -60,16 +54,16 @@ namespace SnippetManager
             {
                 this.snippet = snippet;
                 (Hash1, Hash2) = GetHash();
+            }
 
-                (string, string) GetHash()
-                {
-                    var md5 = new MD5CryptoServiceProvider();
-                    var hash1Bytes = md5.ComputeHash(Encoding.UTF8.GetBytes(snippet.Shortcut));
-                    var hash1 = new string(hash1Bytes.SelectMany(b => b.ToString("x2")).ToArray()).ToUpper();
-                    var hash2Bytes = md5.ComputeHash(hash1Bytes);
-                    var hash2 = new string(hash2Bytes.SelectMany(b => b.ToString("x2")).ToArray()).ToUpper();
-                    return (hash1, hash2);
-                }
+            (string, string) GetHash()
+            {
+                var md5 = new MD5CryptoServiceProvider();
+                var hash1Bytes = md5.ComputeHash(Encoding.UTF8.GetBytes(snippet.Shortcut));
+                var hash1 = new string(hash1Bytes.SelectMany(b => b.ToString("x2")).ToArray()).ToUpper();
+                var hash2Bytes = md5.ComputeHash(hash1Bytes);
+                var hash2 = new string(hash2Bytes.SelectMany(b => b.ToString("x2")).ToArray()).ToUpper();
+                return (hash1, hash2);
             }
 
             public IEnumerable<XElement> GetXElements()
