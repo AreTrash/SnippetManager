@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Text;
+using System.Xml.Linq;
 
 namespace SnippetManager
 {
@@ -21,17 +22,16 @@ namespace SnippetManager
 
             WriteCodeSnippets(
                 new VisualStudioCodeSnippetGenerator(snippets),
-                Const.VisualStudioCodeSnippetFileTemplateName,
                 settingReader.VisualStudioCodeSnippetFolderPath,
                 "VisualStudioCodeSnippet\n{0}\nCreate This?"
             );
-
+            /*
             WriteCodeSnippets(
                 new ReSharperLiveTemplateGenerator(snippets),
                 Const.ReSharperLiveTemplateTemplateName,
                 settingReader.ReSharperLiveTemplateFolderPath,
                 "ReSharperLiveTemplate\n{0}\n Create This?"
-            );
+            );*/
 
             Console.WriteLine("Done");
             Console.ReadLine();
@@ -70,7 +70,7 @@ namespace SnippetManager
             return defaultSnippet.Concat(snippetRemoveNested);
         }
 
-        static void WriteCodeSnippets(ISnippetGenerator snippetGenerator, string templateName, string folderPath, string message)
+        static void WriteCodeSnippets(ISnippetGenerator snippetGenerator, string folderPath, string message)
         {
             var di = new DirectoryInfo(folderPath);
             Console.WriteLine($"{string.Format(message, di.FullName)}");
@@ -81,17 +81,12 @@ namespace SnippetManager
                 Console.WriteLine("Creation was canceled");
                 return;
             }
-            if (!TryReadAllText(templateName, out var template))
-            {
-                Console.WriteLine($"Not Found {Const.SettingsFileName}. Make {Const.SettingsFileName} in directory same as application(.exe).");
-                return;
-            }
 
             if (!Directory.Exists(folderPath)) Directory.CreateDirectory(folderPath);
 
-            foreach (var (fileName, code) in snippetGenerator.GetCodeSnippets(template))
+            foreach (var (fileName, xDoc) in snippetGenerator.GetCodeSnippets())
             {
-                File.WriteAllText($@"{folderPath}\{fileName}", code);
+                xDoc.Save($@"{folderPath}\{fileName}");
             }
 
             Console.WriteLine("Create Successfully");

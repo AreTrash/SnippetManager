@@ -5,7 +5,7 @@ using System.Text;
 
 namespace SnippetManager
 {
-    public class ReSharperLiveTemplateGenerator : ISnippetGenerator
+    /*public class ReSharperLiveTemplateGenerator : ISnippetGenerator
     {
         readonly IEnumerable<Snippet> snippets;
 
@@ -42,5 +42,5 @@ namespace SnippetManager
                 .Replace("{Hash1}", hash1)
                 .Replace("{Hash2}", hash2);
         }
-    }
+    }*/
 }
