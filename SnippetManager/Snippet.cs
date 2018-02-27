@@ -11,6 +11,8 @@ namespace SnippetManager
 
         public string Description { get; }
         public string Shortcut { get; }
+        public bool ExistSelectedMarker { get; }
+        public bool ExistEndMarker { get; }
 
         public Snippet(string title, IEnumerable<string> codeLines)
         {
@@ -18,6 +20,8 @@ namespace SnippetManager
             this.codeLines = codeLines;
             Description = GetDescription();
             Shortcut = title;//Shortcut and Title are the same due to めんどくさい.
+            ExistSelectedMarker = ExistMarker(Const.SelectedMarker);
+            ExistEndMarker = ExistMarker(Const.EndMarker);
         }
 
         string GetDescription()
@@ -27,6 +31,11 @@ namespace SnippetManager
                 .Where(trim => trim.StartsWith(Const.DescriptionTag))
                 .Select(trim => trim.Remove(0, Const.DescriptionTag.Length).Trim())
                 .FirstOrDefault();
+        }
+
+        bool ExistMarker(string marker)
+        {
+            return codeLines.Any(line => line.Contains(marker) || line.Contains(marker.ToUpper()));
         }
 
         public IEnumerable<string> GetSnippetCode(string selected, string end)

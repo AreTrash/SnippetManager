@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Security.Cryptography;
 using System.Text;
@@ -75,7 +76,7 @@ namespace SnippetManager
                 yield return GetElem(GetKey("Reformat/@EntryValue"), true);
                 yield return GetElem(GetKey("ShortenQualifiedReferences/@EntryValue"), true);
                 yield return GetElem(GetKey("Applicability/=Live/@EntryIndexedValue"), true);
-                yield return GetElem(GetKey("Applicability/=Surround/@EntryIndexedValue"), true);//TODO surroundは通常off
+                yield return GetElem(GetKey("Applicability/=Surround/@EntryIndexedValue"), snippet.ExistSelectedMarker);
                 yield return GetElem(GetKey("Scope", "@KeyIndexDefined"), true);
                 yield return GetElem(GetKey("Scope", "Type/@EntryValue"), "InCSharpFile");
                 yield return GetElem(GetKey("Scope", "CustomProperties/=minimumLanguageVersion/@EntryIndexedValue"), "2.0");

@@ -28,6 +28,15 @@ namespace SnippetManager.Test
         }
 
         [Fact]
+        public void ExistMarker()
+        {
+            Assert.True(new Snippet("Hoge", new []{"/*$selected$*/"}).ExistSelectedMarker);
+            Assert.True(new Snippet("Hoge", new []{"/*$END$*/"}).ExistEndMarker);
+            Assert.True(new Snippet("Hoge", new[] { "ooo/*$SELECTED$*/ooo" }).ExistSelectedMarker);
+            Assert.False(new Snippet("Hoge", new[] { "/*$selected$*/" }).ExistEndMarker);
+        }
+
+        [Fact]
         public void GetSimpleSnippetCode()
         {
             var snippet = new Snippet("Hoge", new[] { "AAA", "BBB", "CCC" });

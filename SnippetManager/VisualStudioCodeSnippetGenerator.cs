@@ -74,6 +74,11 @@ namespace SnippetManager
 
                 var code = string.Join(Environment.NewLine, snippet.GetSnippetCode("$selected$", "$end$"));
                 xDoc.Descendants("Code").Single().Add(new XCData(code));
+
+                if (snippet.ExistSelectedMarker)
+                {
+                    xDoc.Descendants("SnippetTypes").Single().Add(new XElement("SnippetType", "SurroundsWith"));
+                }
             }
 
             void DeleteEmptyElement(XContainer container)
