@@ -13,27 +13,23 @@ namespace SnippetManager
         {
             if (!TryReadAllText(Const.SettingsFileName, out var settingFileText))
             {
-                Console.WriteLine(
-                    $"Not Found \"{Const.SettingsFileName}\".\n" +
-                    $"Put it in the same directory as the application(.exe)."
-                );
+                Console.WriteLine($"Not Found \"{Const.SettingsFileName}\".");
+                Console.WriteLine("Put it in the same directory as the application.");
                 return;
             }
 
             var settingReader = new SettingReader(settingFileText.Split('\n'));
             var snippets = GetAllSnippets(settingReader.CodeFolderPath).ToArray();
 
-            WriteCodeSnippets(
-                new VisualStudioCodeSnippetGenerator(snippets),
-                settingReader.VisualStudioCodeSnippetFolderPath
-            );
+            var vsCodeSnippetGenerator = new VisualStudioCodeSnippetGenerator(snippets);
+            WriteCodeSnippets(vsCodeSnippetGenerator, settingReader.VSCodeSnippetFolderPath);
 
             Console.WriteLine();
 
-            WriteCodeSnippets(
-                new ReSharperLiveTemplateGenerator(snippets),
-                settingReader.ReSharperLiveTemplateFolderPath
-            );
+            var rsLiveTemplateGenerator = new ReSharperLiveTemplateGenerator(snippets);
+            WriteCodeSnippets(rsLiveTemplateGenerator, settingReader.RSLiveTemplateFolderPath);
+
+            Console.WriteLine();
 
             Console.WriteLine("ALL Done");
             Console.ReadLine();
@@ -85,7 +81,10 @@ namespace SnippetManager
                 return;
             }
 
-            if (!Directory.Exists(folderPath)) Directory.CreateDirectory(folderPath);
+            if (!Directory.Exists(folderPath))
+            {
+                Directory.CreateDirectory(folderPath);
+            }
 
             foreach (var (fileName, xDoc) in snippetGenerator.GetCodeSnippets())
             {

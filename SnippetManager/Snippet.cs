@@ -17,7 +17,7 @@ namespace SnippetManager
             this.title = title;
             this.codeLines = codeLines;
             Description = GetDescription();
-            Shortcut = title;
+            Shortcut = title;//Shortcut and Title are the same due to めんどくさい.
         }
 
         string GetDescription()

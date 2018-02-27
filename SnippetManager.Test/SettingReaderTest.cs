@@ -17,8 +17,8 @@ namespace SnippetManager.Test
 
             var sr = new SettingReader(settings);
             Assert.Equal("hogehoge", sr.CodeFolderPath);
-            Assert.Equal("fugafuga", sr.VisualStudioCodeSnippetFolderPath);
-            Assert.Equal(" piyopiyo ", sr.ReSharperLiveTemplateFolderPath);
+            Assert.Equal("fugafuga", sr.VSCodeSnippetFolderPath);
+            Assert.Equal(" piyopiyo ", sr.RSLiveTemplateFolderPath);
         }
 
         [Fact]

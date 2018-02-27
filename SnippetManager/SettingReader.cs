@@ -8,15 +8,15 @@ namespace SnippetManager
         readonly IEnumerable<string> settings;
 
         public string CodeFolderPath { get; }
-        public string VisualStudioCodeSnippetFolderPath { get; }
-        public string ReSharperLiveTemplateFolderPath { get; }
+        public string VSCodeSnippetFolderPath { get; }
+        public string RSLiveTemplateFolderPath { get; }
 
         public SettingReader(IEnumerable<string> settings)
         {
             this.settings = settings;
             CodeFolderPath = ReadStringSetting(Const.CodeFolderPathSettingName);
-            VisualStudioCodeSnippetFolderPath = ReadStringSetting(Const.VisualStudioCodeSnippetFolderPathSettingName);
-            ReSharperLiveTemplateFolderPath = ReadStringSetting(Const.ReSharperLiveTemplateFolderPathSettingName);
+            VSCodeSnippetFolderPath = ReadStringSetting(Const.VisualStudioCodeSnippetFolderPathSettingName);
+            RSLiveTemplateFolderPath = ReadStringSetting(Const.ReSharperLiveTemplateFolderPathSettingName);
         }
 
         string ReadStringSetting(string name)

@@ -3,9 +3,6 @@ using System.Linq;
 
 namespace SnippetManager
 {
-    /// <summary>
-    /// ソースコードを読み取りスニペットを取得する
-    /// </summary>
     public class CodeReader
     {
         readonly IEnumerable<string> codeLines;
