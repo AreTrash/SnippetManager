@@ -7,8 +7,8 @@ namespace SnippetManager.Test
         [Fact]
         public void Description()
         {
-            var existDescSnippet = new Snippet("Hoge", new[] { "//@ Hello, World!!", "AAA", });
-            Assert.Equal("Hello, World!!", existDescSnippet.Description);
+            var existDescriptionSnippet = new Snippet("Hoge", new[] { "//@ Hello, World!!", "AAA", });
+            Assert.Equal("Hello, World!!", existDescriptionSnippet.Description);
 
             var notExistDescSnippet = new Snippet("Hoge", new[] {"AAA",});
             Assert.Null(notExistDescSnippet.Description);
@@ -17,11 +17,11 @@ namespace SnippetManager.Test
         [Fact]
         public void Shortcut()
         {
-            var existOtherSnippet = new Snippet("Hoge", new []{"//$Fuga", "AAA", "//$Fuga"});
-            Assert.Equal("Hoge", existOtherSnippet.Shortcut);
+            var existNestedSnippet = new Snippet("Hoge", new []{"//$Fuga", "AAA", "//$Fuga"});
+            Assert.Equal("Hoge", existNestedSnippet.Shortcut);
 
-            existOtherSnippet.TryGetSnippetRemovedNestedSnippet(out var removeOtherSnippet);
-            Assert.Equal("HogeOnly", removeOtherSnippet.Shortcut);
+            existNestedSnippet.TryGetSnippetRemovedNestedSnippet(out var removeNestedSnippet);
+            Assert.Equal("HogeOnly", removeNestedSnippet.Shortcut);
 
             var notExistOtherSnippet = new Snippet("Hoge", new[] {"AAA",});
             Assert.Equal("Hoge", notExistOtherSnippet.Shortcut);
