@@ -50,11 +50,13 @@ namespace SnippetManager
 
             string Hash1 { get; }
             string Hash2 { get; }
+            string TypeText { get; }
 
             public XElementGenerator(Snippet snippet)
             {
                 this.snippet = snippet;
                 (Hash1, Hash2) = GetHash();
+                TypeText = GetTypeText();
             }
 
             (string, string) GetHash()
@@ -65,6 +67,24 @@ namespace SnippetManager
                 var hash2Bytes = md5.ComputeHash(hash1Bytes);
                 var hash2 = new string(hash2Bytes.SelectMany(b => b.ToString("x2")).ToArray()).ToUpper();
                 return (hash1, hash2);
+            }
+
+            string GetTypeText()
+            {
+                var firstLine = snippet.GetSnippetCode("$SELECTION$", "$END$").FirstOrDefault();
+                if (firstLine == null) return null;
+
+                //Split('"')[0] means except string literal
+                var sp = firstLine.Split('"')[0].Split(' ');
+
+                if (sp.Any(s => s == "namespace" || s == "class")) return "InCSharpTypeAndNamespace";
+
+                if (sp.Any(s =>
+                    s == "public" || s == "private" || s == "protected" || s == "internal" ||
+                    s == "static" || s == "readonly" || s == "virtual" || s == "override" ||
+                    s == "partial" || s == "extern" || s == "event")) return "InCSharpTypeMember";
+
+                return "InCSharpExpression";
             }
 
             public IEnumerable<XElement> GetXElements()
@@ -79,7 +99,7 @@ namespace SnippetManager
                 yield return GetElem(GetKey("Applicability/=Live/@EntryIndexedValue"), true);
                 yield return GetElem(GetKey("Applicability/=Surround/@EntryIndexedValue"), snippet.ExistSelectedMarker);
                 yield return GetElem(GetKey("Scope", "@KeyIndexDefined"), true);
-                yield return GetElem(GetKey("Scope", "Type/@EntryValue"), "InCSharpFile");
+                yield return GetElem(GetKey("Scope", "Type/@EntryValue"), TypeText);
                 yield return GetElem(GetKey("Scope", "CustomProperties/=minimumLanguageVersion/@EntryIndexedValue"), "2.0");
 
                 foreach (var param in snippet.Parameters)
