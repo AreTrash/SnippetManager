@@ -23,12 +23,10 @@ namespace SnippetManager
 
             var vsCodeSnippetGenerator = new VisualStudioCodeSnippetGenerator(snippets);
             WriteCodeSnippets(vsCodeSnippetGenerator, settingReader.VSCodeSnippetFolderPath);
-
             Console.WriteLine();
 
             var rsLiveTemplateGenerator = new ReSharperLiveTemplateGenerator(snippets);
             WriteCodeSnippets(rsLiveTemplateGenerator, settingReader.RSLiveTemplateFolderPath);
-
             Console.WriteLine();
 
             Console.WriteLine("ALL Done");
