@@ -1,0 +1,3 @@
+CodeFolderPath=""
+VSSnippetFolderPath="VSCodeSnippet"
+RSLiveTemplateFolderPath="RsLiveTemplate"
