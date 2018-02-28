@@ -15,6 +15,7 @@ namespace SnippetManager
             {
                 Console.WriteLine($"Not Found \"{Const.SettingsFileName}\".");
                 Console.WriteLine("Put it in the same directory as the application.");
+                Console.ReadLine();
                 return;
             }
 
