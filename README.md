@@ -5,7 +5,7 @@ VisualStudioデフォルトのCodeSnippetと、ReSharperのLiveTemplatesに対�
 ## Usage
 ビルドしてアプリケーションを作成し、アプリケーションファイルと同じ場所に[Settings.txt](/Settings/Settings.txt)を置いてください。  
 
-### 1. [Settings.txt](/Settings/Settings.txt)
+## 1. [Settings.txt](/Settings/Settings.txt)
 ""で囲まれた中にPathを指定してください。絶対でも相対でも大丈夫だと思います。
 
 * **CodeFolderPath**  
@@ -20,7 +20,7 @@ VisualStudioデフォルトのスニペットファイルを作成するディ�
 * **RSLiveTemplateFolderPath**  
 ReSharperのLiveTemplateを作成するディレクトリを指定。 
 
-### 2. Create Snippet
+## 2. Create Snippet
 いつも通りにcsファイルにプログラムを殴り書き、以下のタグを追加するだけです。
 
 * **//$[shortcut]** - SnippetTag  
@@ -63,7 +63,7 @@ public static __int__ Gcd(__int__ x, __int__ y)
 //$GCD
 ```
 
-### 3. Import Snippet
+## 3. Import Snippet
 アプリケーションを実行すると指定した場所にスニペットファイルが作成されます。
 
 * **VisualStudioデフォルトのCodeSnippet**  
