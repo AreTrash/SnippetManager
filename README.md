@@ -67,7 +67,7 @@ public static __int__ Gcd(__int__ x, __int__ y)
 アプリケーションを実行すると指定した場所にスニペットファイルが作成されます。
 
 * **VisualStudioデフォルトのCodeSnippet**  
-ツール → コードスニペットマネージャーから適当にインポート。  
+ツール → コードスニペットマネージャー → インポート。  
 でもできますが、前述の通りスニペットファイルの出力パスを  
 ```C:\Users\[User名]\Documents\Visual Studio 20[xx]\Code Snippets\Visual C#\My Code Snippets```  
 にしておく方がインポート不要でスニペットを利用できるのでよいです。
