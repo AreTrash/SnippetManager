@@ -10,8 +10,8 @@ namespace SnippetManager.Test
             var existDescriptionSnippet = new Snippet("Hoge", new[] { "//@ Hello, World!!", "AAA", });
             Assert.Equal("Hello, World!!", existDescriptionSnippet.Description);
 
-            var notExistDescSnippet = new Snippet("Hoge", new[] {"AAA",});
-            Assert.Null(notExistDescSnippet.Description);
+            var notExistDescriptionSnippet = new Snippet("Hoge", new[] {"AAA",});
+            Assert.Null(notExistDescriptionSnippet.Description);
         }
 
         [Fact]
