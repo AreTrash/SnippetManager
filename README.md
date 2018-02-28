@@ -3,9 +3,9 @@ csファイルからスニペットファイルを自動生成するツールで
 VisualStudioデフォルトのCodeSnippetと、ReSharperのLiveTemplateに対応。
 
 ## Usage
-ビルドしてアプリケーションを作成し、アプリケーションファイルと同じ場所に[Settings.txt](/Setting/Setting.txt)を置いてください。  
+ビルドしてアプリケーションを作成し、アプリケーションファイルと同じ場所に[Settings.txt](/Settings/Settings.txt)を置いてください。  
 
-### [Settings.txt](/Setting/Setting.txt)
+### [Settings.txt](/Settings/Settings.txt)
 ""で囲まれた中にPathを指定してください。絶対でも相対でも大丈夫だと思います。
 
 * **CodeFolderPath**  
