@@ -76,6 +76,6 @@ public static __int__ Gcd(__int__ x, __int__ y)
 ReSharper → Tools → TemplatesExplorer → 四角形に矢印が刺さっているボタンからインポート。
 
 ## Other
-* ReSharperLiveTemplateですが、どの場所でもインテリセンスにスニペットが候補として表示されるのがうざいので  
-85ac055b0a7e4044dcd708f20a2c779694c25ec9 このコミットからそれっぽいところのみでしか表示されないようにしました。  
+* ReSharperLiveTemplateですが、どの場所でもインテリセンスにスニペットが候補として表示されるのがうざいので  
+それっぽいところのみ候補として表示されるようにしました。  
 適当実装なので何か不都合がありましたら教えてください。
