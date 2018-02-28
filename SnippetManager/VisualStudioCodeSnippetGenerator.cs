@@ -80,7 +80,7 @@ namespace SnippetManager
                     xDoc.Descendants("SnippetTypes").Single().Add(new XElement("SnippetType", "SurroundsWith"));
                 }
 
-                var declarations = xDoc.Descendants("Declaration").Single();
+                var declarations = xDoc.Descendants("Declarations").Single();
                 foreach (var param in snippet.Parameters)
                 {
                     var literal = new XElement("Literal", new XElement("ID", param), new XElement("Default", param));
