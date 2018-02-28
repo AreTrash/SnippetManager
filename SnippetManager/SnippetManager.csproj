@@ -43,14 +43,14 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="CodeReader.cs" />
-    <Compile Include="Const.cs" />
-    <Compile Include="ISnippetGenerator.cs" />
-    <Compile Include="VisualStudioCodeSnippetGenerator.cs" />
+    <Compile Include="Const\Const.cs" />
+    <Compile Include="Snippet\ISnippetGenerator.cs" />
+    <Compile Include="Snippet\VisualStudioCodeSnippetGenerator.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="ReSharperLiveTemplateGenerator.cs" />
+    <Compile Include="Snippet\ReSharperLiveTemplateGenerator.cs" />
     <Compile Include="SettingReader.cs" />
-    <Compile Include="Snippet.cs" />
+    <Compile Include="Snippet\Snippet.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
