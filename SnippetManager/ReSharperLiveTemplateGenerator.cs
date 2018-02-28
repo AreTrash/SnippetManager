@@ -35,7 +35,7 @@ namespace SnippetManager
         {
             var xDoc = XDocMain;
 
-            var children = snippets.SelectMany(snippet => new Generator(snippet).GetXElements());
+            var children = snippets.SelectMany(snippet => new XElementGenerator(snippet).GetXElements());
         
             // ReSharper disable once PossibleNullReferenceException
             // ReSharper disable once CoVariantArrayConversion
@@ -44,14 +44,14 @@ namespace SnippetManager
             yield return ("RsLiveTemplates.DotSettings", xDoc);
         }
 
-        class Generator
+        class XElementGenerator
         {
             readonly Snippet snippet;
 
             string Hash1 { get; }
             string Hash2 { get; }
 
-            public Generator(Snippet snippet)
+            public XElementGenerator(Snippet snippet)
             {
                 this.snippet = snippet;
                 (Hash1, Hash2) = GetHash();
@@ -81,6 +81,11 @@ namespace SnippetManager
                 yield return GetElem(GetKey("Scope", "@KeyIndexDefined"), true);
                 yield return GetElem(GetKey("Scope", "Type/@EntryValue"), "InCSharpFile");
                 yield return GetElem(GetKey("Scope", "CustomProperties/=minimumLanguageVersion/@EntryIndexedValue"), "2.0");
+
+                foreach (var param in snippet.Parameters)
+                {
+                    yield return GetElem(GetKey($"Field/={param}/@KeyIndexDefined"), true);
+                }
             }
 
             string GetKey(string key1)
