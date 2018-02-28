@@ -27,11 +27,6 @@ namespace SnippetManager
             )
         );
 
-        static XContainer Literal => new XElement("Literal",
-            new XElement("ID"),
-            new XElement("Default")
-        );
-
         readonly IEnumerable<Snippet> snippets;
 
         public VisualStudioCodeSnippetGenerator(IEnumerable<Snippet> snippets)
