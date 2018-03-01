@@ -27,25 +27,25 @@ ReSharperのLiveTemplateを作成するディレクトリを指定。
 ```//$```で始まるタグで囲まれた部分がスニペットとして認識されます。  
 以下のサンプルは、ショートカット名"GCD"のスニペットです。
 ```csharp
-//$GCD
+//$gcd
 public static int Gcd(int x, int y)
 {
     return y == 0 ? x : Gcd(y, x % y);
 }
-//$GCD
+//$gcd
 ```
 
 * **//@[description]** - DescriptionTag  
 ```//@```で始まるタグの後にそのスニペットの概要を付け足すことが出来ます。  
 このタグはスニペットタグで囲まれた内部に置いてください。  
 ```csharp
-//$GCD
+//$gcd
 //@ Greatest Common Divisor （最大公約数を求めます）
 public static int Gcd(int x, int y)
 {
     return y == 0 ? x : Gcd(y, x % y);
 }
-//$GCD
+//$gcd
 ```
 
 * **\_\_[parameter]\_\_** - Parameter  
@@ -55,12 +55,24 @@ public static int Gcd(int x, int y)
 using __int__ = Int32; //スニペットタグ外に記述。__int__をint型として扱うようにしコンパイルが通るように。
 //型をパラメーターにしておくと、long, byteなど他の型用のスニペットが不要になる。
 
-//$GCD
+//$gcd
 public static __int__ Gcd(__int__ x, __int__ y)
 {
     return y == 0 ? x : Gcd(y, x % y);
 }
-//$GCD
+//$gcd
+```
+
+* **/\*$SELECTED$\*/** - SelectedTag  
+スニペット貼り付け時、選択していたものがこのタグの位置に挿入されます。  
+
+* **/\*$END$\*/** - EndTag  
+スニペット貼り付け時のカーソルの位置になります。
+
+```csharp
+//$cww
+Console.Write(/*$SELECTED$*//*$END$*/);
+//$cww
 ```
 
 ## 3. Import Snippet
