@@ -23,7 +23,7 @@ ReSharperのLiveTemplateを作成するディレクトリを指定。
 ## 2. Create Snippet
 いつも通りにcsファイルにプログラムを殴り書き、以下のタグを追加するだけです。
 
-* **//$[shortcut]** - SnippetTag  
+* **//$[shortcut]**  
 ```//$```で始まるタグで囲まれた部分がスニペットとして認識されます。  
 以下のサンプルは、ショートカット名"GCD"のスニペットです。
 ```csharp
@@ -35,9 +35,9 @@ public static int Gcd(int x, int y)
 //$gcd
 ```
 
-* **//@[description]** - DescriptionTag  
+* **//@[description]**  
 ```//@```で始まるタグの後にそのスニペットの概要を付け足すことが出来ます。  
-このタグはスニペットタグで囲まれた内部に置いてください。  
+このタグは前述のタグで囲まれた内部に置いてください。  
 ```csharp
 //$gcd
 //@ Greatest Common Divisor （最大公約数を求めます）
@@ -48,7 +48,7 @@ public static int Gcd(int x, int y)
 //$gcd
 ```
 
-* **\_\_[parameter]\_\_** - Parameter  
+* **\_\_[parameter]\_\_**  
 ```__```で囲まれた文字はスニペット貼り付け時編集可能なパラメーターになります。  
 型に対してパラメーターを使用したいときは、以下のサンプルが参考になります。  
 ```csharp
@@ -63,10 +63,10 @@ public static __int__ Gcd(__int__ x, __int__ y)
 //$gcd
 ```
 
-* **/\*$SELECTED$\*/** - SelectedTag  
+* **/\*$SELECTED$\*/**  
 スニペット貼り付け時、選択していたものがこのタグの位置に挿入されます。  
 
-* **/\*$END$\*/** - EndTag  
+* **/\*$END$\*/**  
 スニペット貼り付け時のキャレット（点滅している棒）の位置になります。
 
 ```csharp
