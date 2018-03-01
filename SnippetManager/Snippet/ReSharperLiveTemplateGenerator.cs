@@ -75,9 +75,9 @@ namespace SnippetManager
                 if (firstLine == null) return null;
 
                 //Split('"')[0] means except string literal
-                var sp = firstLine.Split('"')[0].Split(' ');
+                var sp = firstLine.Split('"')[0].Split(new[] {' '}, StringSplitOptions.RemoveEmptyEntries);
 
-                if (sp.Any(s => s == "namespace" || s == "class")) return "InCSharpTypeAndNamespace";
+                if (sp[0] == "using" || sp[0] == "namespace" || sp.Any(s => s == "class")) return "InCSharpTypeAndNamespace";
 
                 if (sp.Any(s =>
                     s == "public" || s == "private" || s == "protected" || s == "internal" ||
