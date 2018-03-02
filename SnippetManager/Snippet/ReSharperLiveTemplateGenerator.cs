@@ -71,20 +71,12 @@ namespace SnippetManager
 
             string GetTypeText()
             {
-                var firstLine = snippet.GetSnippetCode("$SELECTION$", "$END$").FirstOrDefault();
-                if (firstLine == null) return null;
-
-                //Split('"')[0] means except string literal
-                var sp = firstLine.Split('"')[0].Split(new[] {' '}, StringSplitOptions.RemoveEmptyEntries);
-
-                if (sp[0] == "using" || sp[0] == "namespace" || sp.Any(s => s == "class")) return "InCSharpTypeAndNamespace";
-
-                if (sp.Any(s =>
-                    s == "public" || s == "private" || s == "protected" || s == "internal" ||
-                    s == "static" || s == "readonly" || s == "virtual" || s == "override" ||
-                    s == "partial" || s == "extern" || s == "event")) return "InCSharpTypeMember";
-
-                return "InCSharpExpression";
+                switch (snippet.IndentCount)
+                {
+                    case 0: case 1: return "InCSharpTypeAndNamespace";
+                    case 2: return "InCSharpTypeMember";
+                    default: return "InCSharpExpression";
+                }
             }
 
             public IEnumerable<XElement> GetXElements()

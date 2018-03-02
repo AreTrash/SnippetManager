@@ -15,6 +15,7 @@ namespace SnippetManager
         public bool ExistSelectedMarker { get; }
         public bool ExistEndMarker { get; }
         public IEnumerable<string> Parameters { get; }
+        public int IndentCount { get; }
 
         public Snippet(string title, IEnumerable<string> codeLines)
         {
@@ -25,6 +26,7 @@ namespace SnippetManager
             ExistSelectedMarker = ExistMarker(Const.SelectedMarker);
             ExistEndMarker = ExistMarker(Const.EndMarker);
             Parameters = GetParameters();
+            IndentCount = GetIndentCount();
         }
 
         string GetDescription()
@@ -47,6 +49,13 @@ namespace SnippetManager
                 .SelectMany(line => Regex.Matches(line, "__(.+?)__").Cast<Match>())
                 .Select(match => match.Value.Trim('_'))
                 .Distinct();
+        }
+
+        int GetIndentCount()
+        {
+            var firstLine = codeLines.FirstOrDefault();
+            if (firstLine == null) return 0;
+            return Math.Max(firstLine.TakeWhile(c => c == ' ').Count() / 4, firstLine.TakeWhile(c => c == '\t').Count());
         }
 
         public IEnumerable<string> GetSnippetCode(string selected, string end)

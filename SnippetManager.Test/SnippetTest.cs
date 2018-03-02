@@ -43,6 +43,14 @@ namespace SnippetManager.Test
         }
 
         [Fact]
+        public void IndentCount()
+        {
+            Assert.Equal(0, new Snippet("Hoge", new[] { "XXX" }).IndentCount);
+            Assert.Equal(1, new Snippet("Hoge", new[] { "\t" }).IndentCount);
+            Assert.Equal(2, new Snippet("Hoge", new[] { "        ZZZ        " }).IndentCount);
+        }
+
+        [Fact]
         public void GetSimpleSnippetCode()
         {
             var snippet = new Snippet("Hoge", new[] { "AAA", "BBB", "CCC" });
