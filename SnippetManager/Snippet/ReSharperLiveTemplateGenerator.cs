@@ -102,9 +102,10 @@ namespace SnippetManager
                 yield return GetElem(GetKey("Scope", "Type/@EntryValue"), TypeText);
                 yield return GetElem(GetKey("Scope", "CustomProperties/=minimumLanguageVersion/@EntryIndexedValue"), "2.0");
 
-                foreach (var param in snippet.Parameters)
+                foreach (var (param, i) in snippet.Parameters.Select((param, i) => (param, i)))
                 {
                     yield return GetElem(GetKey($"Field/={param}/@KeyIndexDefined"), true);
+                    yield return GetElem(GetKey($"Field/={param}/Order/@EntryValue"), i);
                 }
             }
 
@@ -118,14 +119,24 @@ namespace SnippetManager
                 return $"{GetKey(key1)}/={Hash2}/{key2}";
             }
 
+            XElement GetElemCore(string tag, string key, object value)
+            {
+                return new XElement(s + tag, new XAttribute(x + "Key", key), value);
+            }
+
             XElement GetElem(string key, bool boolean)
             {
-                return new XElement(s + "Boolean", new XAttribute(x + "Key", key), boolean.ToString());
+                return GetElemCore("Boolean", key, boolean.ToString());
+            }
+
+            XElement GetElem(string key, int number)
+            {
+                return GetElemCore("Int64", key, number);
             }
 
             XElement GetElem(string key, string text)
             {
-                return new XElement(s + "String", new XAttribute(x + "Key", key), text);
+                return GetElemCore("String", key, text);
             }
         }
     }
