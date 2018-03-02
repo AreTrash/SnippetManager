@@ -63,6 +63,9 @@ public static __int__ Gcd(__int__ x, __int__ y)
 //$gcd
 ```
 
+* **\_\_\_\_**  
+スニペット貼り付け時消滅します。
+
 * **/\*$SELECTED$\*/**  
 スニペット貼り付け時、選択していたものがこのタグの位置に挿入されます。  
 
@@ -70,8 +73,9 @@ public static __int__ Gcd(__int__ x, __int__ y)
 スニペット貼り付け時のキャレット（点滅している棒）の位置になります。
 
 ```csharp
+var ____ = "NONE"; //Console.Writeは引数0をとるものがないので、コンパイルエラー回避にこれを使う。
 //$cww
-Console.Write(/*$SELECTED$*//*$END$*/);
+Console.Write(/*$SELECTED$*//*$END$*/____);
 //$cww
 ```
 
