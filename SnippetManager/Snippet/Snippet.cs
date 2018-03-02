@@ -58,6 +58,7 @@ namespace SnippetManager
                 .Select(line => line.Replace(Const.SelectedMarker.ToUpper(), selected))
                 .Select(line => line.Replace(Const.EndMarker, end))
                 .Select(line => line.Replace(Const.EndMarker.ToUpper(), end))
+                .Select(line => line.Replace("____", ""))
                 .Select(line => Regex.Replace(line, "__(.+?)__", match => $"${match.Value.Trim('_')}$"));
         }
 
