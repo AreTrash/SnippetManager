@@ -9,6 +9,13 @@ namespace SnippetManager
 {
     public class ReSharperLiveTemplateGenerator : ISnippetGenerator
     {
+        static readonly IReadOnlyDictionary<string, (string name, bool editable)> FuncDic =
+            new Dictionary<string, (string name, bool editable)>
+            {
+                {"solution", ("getSolutionName()", false)},
+                {"index", ("suggestIndexVariable()", true)},
+            };
+
         static readonly XNamespace x = "http://schemas.microsoft.com/winfx/2006/xaml";
         static readonly XNamespace s = "clr-namespace:System;assembly=mscorlib";
         static readonly XNamespace ss = "urn:shemas-jetbrains-com:settings-storage-xaml";
@@ -98,6 +105,13 @@ namespace SnippetManager
                 {
                     yield return GetElem(GetKey($"Field/={param}/@KeyIndexDefined"), true);
                     yield return GetElem(GetKey($"Field/={param}/Order/@EntryValue"), i);
+
+                    var kvp = FuncDic.Where(f => param.ToLower().StartsWith(f.Key)).ToArray();
+                    if (kvp.Length == 0) continue;
+
+                    var func = kvp[0].Value;
+                    yield return GetElem(GetKey($"Field/={param}/Expression/@EntryValue"), func.name);
+                    if (!func.editable) yield return GetElem(GetKey($"Field/={param}/InitialRange/@EntryValue"), -1);
                 }
             }
 
