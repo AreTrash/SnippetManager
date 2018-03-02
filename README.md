@@ -91,6 +91,6 @@ ReSharper → Tools → TemplatesExplorer → 四角形に矢印が刺さって�
 ReSharperLiveTemplateですが、どの場所でもショートカットが表示されるのが鬱陶しかったので  
 それっぽいところでのみ候補として表示されるようにしました。  
 最初の行のインデント数でスニペットのタイプを判別しています。  
-* 0 or 1: Type Or Namespace  
+* 0 or 1: Namespace or Type  
 * 2: TypeMember  
 * 3↑: Statement or Expression  
