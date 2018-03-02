@@ -88,7 +88,9 @@ Console.Write(/*$SELECTED$*//*$END$*/);
 ReSharper → Tools → TemplatesExplorer → 四角形に矢印が刺さっているボタンからインポート。
 
 ## Other
-* ReSharperLiveTemplateですが、どの場所でも表示されるのが鬱陶しかったので  
+ReSharperLiveTemplateですが、どの場所でもショートカットが表示されるのが鬱陶しかったので  
 それっぽいところでのみ候補として表示されるようにしました。  
-```例えばクラスっぽかったらクラスが記述できる場所、メソッドっぽかったらメソッドが記述できる場所等```  
-適当実装なので何か不都合がありましたら教えてください。  
+最初の行のインデント数でスニペットのタイプを判別しています。  
+* 0 or 1: Type Or Namespace  
+* 2: TypeMember  
+* 3↑: Statement or Expression  
