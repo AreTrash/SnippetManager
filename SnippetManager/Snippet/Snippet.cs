@@ -1,13 +1,14 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Text;
 using System.Text.RegularExpressions;
 
 namespace SnippetManager
 {
     public class Snippet : IEquatable<Snippet>
     {
-        readonly string title;
+        protected readonly string title;
         readonly IEnumerable<string> codeLines;
 
         public string Description { get; }
@@ -120,6 +121,34 @@ namespace SnippetManager
         public bool Equals(Snippet other)
         {
             return other != null && title == other.title && codeLines.SequenceEqual(other.codeLines);
+        }
+    }
+
+    public class ErrorSnippet : Snippet, IEquatable<ErrorSnippet>
+    {
+        readonly string errorMessage;
+        readonly string path;
+
+        public string FormattedErrorMessage => GetFormattedErrorMessage();
+
+        public ErrorSnippet(string title, string path, string errorMessage) : base(title, new []{""})
+        {
+            this.errorMessage = errorMessage;
+            this.path = path;
+        }
+
+        string GetFormattedErrorMessage()
+        {
+            var sb = new StringBuilder();
+            sb.AppendLine($"Error: {errorMessage}");
+            sb.AppendLine($"@Tag: {title}");
+            sb.AppendLine($"@Path: {path}");
+            return sb.ToString();
+        }
+
+        public bool Equals(ErrorSnippet other)
+        {
+            return title == other?.title && errorMessage == other?.errorMessage && path == other?.path;
         }
     }
 }

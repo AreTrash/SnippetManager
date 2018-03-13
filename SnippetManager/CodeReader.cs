@@ -5,10 +5,12 @@ namespace SnippetManager
 {
     public class CodeReader
     {
+        readonly string path;
         readonly IEnumerable<string> codeLines;
 
-        public CodeReader(IEnumerable<string> codeLines)
+        public CodeReader(string path, IEnumerable<string> codeLines)
         {
+            this.path = path;
             this.codeLines = codeLines;
         }
 
@@ -26,9 +28,15 @@ namespace SnippetManager
 
         Snippet GetSnippetInfo(string title, int startRow, out int endRow)
         {
+            if (codeLines.Skip(startRow).All(line => !IsSnippetEndTag(line, title)))
+            {
+                endRow = -1;
+                return new ErrorSnippet(title, path, "Not exist snippet end tag.");
+            }
+
             var snippetLines = codeLines
                 .Skip(startRow)
-                .TakeWhile(line => !IsSnippetTag(line, out var _title) || _title != title)
+                .TakeWhile(line => !IsSnippetEndTag(line, title))
                 .ToArray();
 
             endRow = startRow + snippetLines.Length;
@@ -49,6 +57,11 @@ namespace SnippetManager
                 title = null;
                 return false;
             }
+        }
+
+        bool IsSnippetEndTag(string line, string title)
+        {
+            return IsSnippetTag(line, out var _title) && _title == title;
         }
     }
 }

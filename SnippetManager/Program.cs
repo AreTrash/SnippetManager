@@ -22,11 +22,15 @@ namespace SnippetManager
             var settingReader = new SettingReader(settingFileText.Split('\n'));
             var snippets = GetAllSnippets(settingReader.CodeFolderPath).ToArray();
 
-            var vsCodeSnippetGenerator = new VisualStudioCodeSnippetGenerator(snippets);
+            var errors = snippets.OfType<ErrorSnippet>().ToArray();
+            foreach (var errorSnippet in errors) Console.WriteLine(errorSnippet.FormattedErrorMessage);
+            var snippetsExceptError = snippets.Except(errors).ToArray();
+
+            var vsCodeSnippetGenerator = new VisualStudioCodeSnippetGenerator(snippetsExceptError);
             WriteCodeSnippets(vsCodeSnippetGenerator, settingReader.VSCodeSnippetFolderPath);
             Console.WriteLine();
 
-            var rsLiveTemplateGenerator = new ReSharperLiveTemplateGenerator(snippets);
+            var rsLiveTemplateGenerator = new ReSharperLiveTemplateGenerator(snippetsExceptError);
             WriteCodeSnippets(rsLiveTemplateGenerator, settingReader.RSLiveTemplateFolderPath);
             Console.WriteLine();
 
@@ -52,11 +56,11 @@ namespace SnippetManager
         {
             var files = Directory
                 .GetFiles(codeFolderPath, "*.cs", SearchOption.AllDirectories)
-                .Select(File.ReadAllLines)
+                .Select(path => (path: path, lines: File.ReadAllLines(path)))
                 .ToArray();
 
             var defaultSnippet = files
-                .SelectMany(file => new CodeReader(file).GetSnippetInfos())
+                .SelectMany(file => new CodeReader(file.path, file.lines).GetSnippetInfos())
                 .ToArray();
 
             var snippetRemoveNested = defaultSnippet

@@ -18,7 +18,7 @@ namespace SnippetManager.Test
             };
 
             var exp = new[] {new Snippet("Hoge", new[] {"YYY"})};
-            var act = new CodeReader(codeLines).GetSnippetInfos();
+            var act = new CodeReader("path", codeLines).GetSnippetInfos();
             Assert.Equal(exp, act);
         }
 
@@ -47,7 +47,7 @@ namespace SnippetManager.Test
                 new Snippet("Fuga", new[] {"AAA", "BBB", "CCC"}),
                 new Snippet("Piyo", new string[0]),
             };
-            var act = new CodeReader(codeLines).GetSnippetInfos();
+            var act = new CodeReader("path", codeLines).GetSnippetInfos();
             Assert.Equal(exp, act);
         }
 
@@ -60,10 +60,16 @@ namespace SnippetManager.Test
                 "//$Hoge",
                 "YYY",
                 "ZZZ",
+                "//$Piyo",
+                "AAA",
             };
 
-            var exp = new[] {new Snippet("Hoge", new[] {"YYY", "ZZZ"})};
-            var act = new CodeReader(codeLines).GetSnippetInfos();
+            var exp = new[]
+            {
+                new ErrorSnippet("Hoge", "path", "Not exist snippet end tag."),
+                new ErrorSnippet("Piyo", "path", "Not exist snippet end tag."),
+            };
+            var act = new CodeReader("path", codeLines).GetSnippetInfos();
             Assert.Equal(exp, act);
         }
 
@@ -87,7 +93,7 @@ namespace SnippetManager.Test
                 new Snippet("Hoge", new[] {"YYY", "//$Fuga", "OOO", "//$Fuga"}), 
                 new Snippet("Fuga", new []{"OOO"}), 
             };
-            var act = new CodeReader(codeLines).GetSnippetInfos();
+            var act = new CodeReader("path", codeLines).GetSnippetInfos();
             Assert.Equal(exp, act);
         }
 
@@ -111,7 +117,7 @@ namespace SnippetManager.Test
                 new Snippet("Hoge", new[] {"YYY"}),
                 new Snippet("Hoge", new[] {"ZZZ"}),
             };
-            var act = new CodeReader(codeLines).GetSnippetInfos();
+            var act = new CodeReader("path", codeLines).GetSnippetInfos();
             Assert.Equal(exp, act);
         }
     }
