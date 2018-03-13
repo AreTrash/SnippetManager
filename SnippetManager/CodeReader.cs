@@ -40,7 +40,7 @@ namespace SnippetManager
                 .ToArray();
 
             endRow = startRow + snippetLines.Length;
-            return new Snippet(title, snippetLines);
+            return new Snippet(title, path, snippetLines);
         }
 
         bool IsSnippetTag(string line, out string title)

@@ -20,11 +20,11 @@ namespace SnippetManager
             }
 
             var settingReader = new SettingReader(settingFileText.Split('\n'));
-            var snippets = GetAllSnippets(settingReader.CodeFolderPath).ToArray();
+            var snippets = GetAllSnippets(settingReader.CodeFolderPath);
 
-            var errors = snippets.OfType<ErrorSnippet>().ToArray();
+            var errors = snippets.OfType<ErrorSnippet>();
             foreach (var errorSnippet in errors) Console.WriteLine(errorSnippet.FormattedErrorMessage);
-            var snippetsExceptError = snippets.Except(errors).ToArray();
+            var snippetsExceptError = snippets.Except(errors);
 
             var vsCodeSnippetGenerator = new VisualStudioCodeSnippetGenerator(snippetsExceptError);
             WriteCodeSnippets(vsCodeSnippetGenerator, settingReader.VSCodeSnippetFolderPath);
@@ -56,19 +56,21 @@ namespace SnippetManager
         {
             var files = Directory
                 .GetFiles(codeFolderPath, "*.cs", SearchOption.AllDirectories)
-                .Select(path => (path: path, lines: File.ReadAllLines(path)))
-                .ToArray();
+                .Select(path => (path: path, lines: File.ReadAllLines(path)));
 
             var defaultSnippet = files
-                .SelectMany(file => new CodeReader(file.path, file.lines).GetSnippetInfos())
-                .ToArray();
+                .SelectMany(file => new CodeReader(file.path, file.lines).GetSnippetInfos());
 
-            var snippetRemoveNested = defaultSnippet
+            var duplicated = defaultSnippet.GroupBy(s => s.Title).Where(g => g.Count() >= 2).SelectMany(g => g);
+            var duplicatedError = duplicated.Select(s => new ErrorSnippet(s.Title, s.Path, "Duplicate shortcut name."));
+            var defaultSnippetAdjustDuplicated = defaultSnippet.Except(duplicated).Concat(duplicatedError);
+
+            var snippetRemoveNested = defaultSnippetAdjustDuplicated
                 .Select(s => (canGet: s.TryGetSnippetRemovedNestedSnippet(out var snippet), snippet: snippet))
                 .Where(tup => tup.canGet)
                 .Select(tup => tup.snippet);
 
-            return defaultSnippet.Concat(snippetRemoveNested);
+            return defaultSnippetAdjustDuplicated.Concat(snippetRemoveNested);
         }
 
         static void WriteCodeSnippets(ISnippetGenerator snippetGenerator, string folderPath)
