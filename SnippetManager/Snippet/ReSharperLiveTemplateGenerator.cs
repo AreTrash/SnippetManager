@@ -13,6 +13,7 @@ namespace SnippetManager
             new Dictionary<string, (string name, bool editable)>
             {
                 {"solution", ("getSolutionName()", false)},
+                {"project", ("getProjectName()", false) },
                 {"index", ("suggestIndexVariable()", true)},
             };
 
