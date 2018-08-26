@@ -59,11 +59,19 @@ namespace SnippetManager
                 .Select(path => (path: path, lines: File.ReadAllLines(path)));
 
             var defaultSnippet = files
-                .SelectMany(file => new CodeReader(file.path, file.lines).GetSnippetInfos());
+                .SelectMany(file =>
+                {
+                    return new CodeReader(file.path, file.lines)
+                        .GetSnippetInfos()
+                        .Select(s => (path : file.path, snippet : s));
+                });
 
-            var duplicated = defaultSnippet.GroupBy(s => s.Title).Where(g => g.Count() >= 2).SelectMany(g => g);
-            var duplicatedError = duplicated.Select(s => new ErrorSnippet(s.Title, s.Path, "Duplicate shortcut name."));
-            var defaultSnippetAdjustDuplicated = defaultSnippet.Except(duplicated).Concat(duplicatedError);
+            var duplicated = defaultSnippet.GroupBy(t => t.snippet).Where(g => g.Count() >= 2).SelectMany(g => g);
+            var duplicatedError = duplicated.Select(t => new ErrorSnippet(t.snippet.Title, t.path, "Duplicate shortcut name."));
+
+            var defaultSnippetAdjustDuplicated = defaultSnippet.Select(t => t.snippet)
+                .Except(duplicated.Select(t => t.snippet))
+                .Concat(duplicatedError);
 
             var snippetRemoveNested = defaultSnippetAdjustDuplicated
                 .Select(s => (canGet: s.TryGetSnippetRemovedNestedSnippet(out var snippet), snippet: snippet))

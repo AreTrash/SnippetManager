@@ -9,11 +9,9 @@ namespace SnippetManager
     public class Snippet : IEquatable<Snippet>
     {
         readonly string title;
-        readonly string path;
         readonly IEnumerable<string> codeLines;
 
         public string Title => title;
-        public string Path => path;
 
         public string Description { get; }
         public string Shortcut { get; }
@@ -22,10 +20,9 @@ namespace SnippetManager
         public IEnumerable<string> Parameters { get; }
         public int IndentCount { get; }
 
-        public Snippet(string title, string path, IEnumerable<string> codeLines)
+        public Snippet(string title, IEnumerable<string> codeLines)
         {
             this.title = title;
-            this.path = path;
             this.codeLines = codeLines;
 
             Description = GetDescription();
@@ -120,7 +117,7 @@ namespace SnippetManager
                 }
             }
 
-            snippet = new Snippet(title + Const.OnlySnippetSuffix, path, ret);
+            snippet = new Snippet(title + Const.OnlySnippetSuffix, ret);
             return true;
         }
 
@@ -133,12 +130,14 @@ namespace SnippetManager
     public class ErrorSnippet : Snippet, IEquatable<ErrorSnippet>
     {
         readonly string errorMessage;
+        readonly string path;
 
         public string FormattedErrorMessage => GetFormattedErrorMessage();
 
-        public ErrorSnippet(string title, string path, string errorMessage) : base(title, path, new []{""})
+        public ErrorSnippet(string title, string path, string errorMessage) : base(title, new []{""})
         {
             this.errorMessage = errorMessage;
+            this.path = path;
         }
 
         string GetFormattedErrorMessage()
@@ -146,13 +145,13 @@ namespace SnippetManager
             var sb = new StringBuilder();
             sb.AppendLine($"Error: {errorMessage}");
             sb.AppendLine($"@Tag: {Title}");
-            sb.AppendLine($"@Path: {Path}");
+            sb.AppendLine($"@Path: {path}");
             return sb.ToString();
         }
 
         public bool Equals(ErrorSnippet other)
         {
-            return Title == other?.Title && errorMessage == other?.errorMessage && Path == other?.Path;
+            return Title == other?.Title && errorMessage == other?.errorMessage && path == other?.path;
         }
     }
 }
